@@ -261,6 +261,35 @@
             }, { passive: false });
         });
 
+        // Improve text input handling on mobile
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            // Prevent zoom on focus
+            input.addEventListener('focus', function() {
+                this.style.fontSize = '16px';
+            });
+
+            // Handle input events
+            input.addEventListener('input', function() {
+                // Ensure proper value handling
+                this.value = this.value.trim();
+            });
+
+            // Handle blur events
+            input.addEventListener('blur', function() {
+                // Clean up the value when input loses focus
+                this.value = this.value.trim();
+            });
+
+            // Prevent unwanted behaviors
+            input.addEventListener('touchstart', function(e) {
+                e.stopPropagation();
+            }, { passive: false });
+
+            input.addEventListener('touchend', function(e) {
+                e.stopPropagation();
+            }, { passive: false });
+        });
+
         // Settings Modal Functions
         function showSettings() {
             document.getElementById('settingsModal').style.display = 'block';

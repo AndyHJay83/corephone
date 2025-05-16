@@ -583,58 +583,120 @@ input[type="text"] {
 }
 
 /* LEXICON Feature */
-.lexicon-input {
+.lexicon-input,
+.position-input {
     display: flex;
+    flex-direction: column;
     gap: 10px;
-    margin-bottom: 10px;
     width: 100%;
+    padding: 10px;
 }
 
-.lexicon-input input {
-    flex: 1;
+.lexicon-input input,
+.position-input input {
+    width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
     font-size: 16px;
+    border: 2px solid #1B5E20;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    text-align: center;
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
 }
 
-.lexicon-input button {
-    padding: 12px 20px;
-    background: #007bff;
+.lexicon-input button,
+.position-input button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #1B5E20;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
 }
 
+/* Help text */
 .lexicon-help {
     color: #666;
     font-size: 14px;
     text-align: center;
+    margin: 10px 0;
+    padding: 0 10px;
 }
 
-/* Position 1 Feature */
-.position-input {
+/* Mobile-specific improvements */
+@media (max-width: 600px) {
+    .lexicon-input,
+    .position-input {
+        padding: 5px;
+    }
+
+    .lexicon-input input,
+    .position-input input {
+        padding: 15px;
+        font-size: 16px;
+        border-width: 2px;
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+    }
+
+    .lexicon-input button,
+    .position-input button {
+        padding: 15px;
+        font-size: 16px;
+        min-height: 44px;
+    }
+
+    /* Prevent zoom on input focus */
+    input[type="text"] {
+        font-size: 16px !important;
+    }
+}
+
+/* Remove default iOS input styling */
+input[type="text"] {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 8px;
+    background-color: white;
+}
+
+/* Focus states */
+input[type="text"]:focus {
+    outline: none;
+    border-color: #2E7D32;
+    box-shadow: 0 0 0 2px rgba(27, 94, 32, 0.2);
+}
+
+/* Placeholder styling */
+input[type="text"]::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+/* Ensure proper spacing in feature sections */
+.feature-section {
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+/* Ensure proper button alignment */
+.button-container {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     width: 100%;
-}
-
-.position-input input {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.position-input button {
-    padding: 12px 20px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 10px;
 }
 
 /* Vowel Feature */
