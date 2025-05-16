@@ -822,8 +822,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         handleVowelSelection(false);
     });
     
-    // Reset button
-    document.getElementById('resetButton').addEventListener('click', resetApp);
+    // Reset button - full page refresh
+    document.getElementById('resetButton').addEventListener('click', () => {
+        window.location.reload();
+    });
     
     // Settings button
     document.getElementById('settingsButton').addEventListener('click', () => {
