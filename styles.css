@@ -131,6 +131,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
 .feature-title {
@@ -590,13 +592,15 @@ input[type="text"] {
     gap: 10px;
     width: 100%;
     padding: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .lexicon-input input,
 .position-input input {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
+    padding: 15px;
+    font-size: 16px !important;
     border: 2px solid #1B5E20;
     border-radius: 8px;
     background-color: white;
@@ -605,15 +609,17 @@ input[type="text"] {
     -webkit-appearance: none;
     appearance: none;
     margin: 0;
+    position: relative;
+    z-index: 2;
 }
 
 .lexicon-input button,
 .position-input button {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
     font-size: 16px;
-    background-color: #1B5E20;
-    color: white;
+    background-color: #1B5E20 !important;
+    color: white !important;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -622,6 +628,8 @@ input[type="text"] {
     -webkit-appearance: none;
     appearance: none;
     margin: 0;
+    position: relative;
+    z-index: 2;
 }
 
 /* Help text */
@@ -638,16 +646,20 @@ input[type="text"] {
     .lexicon-input,
     .position-input {
         padding: 5px;
+        position: relative;
+        z-index: 1;
     }
 
     .lexicon-input input,
     .position-input input {
         padding: 15px;
-        font-size: 16px;
+        font-size: 16px !important;
         border-width: 2px;
         -webkit-appearance: none;
         appearance: none;
         border-radius: 8px;
+        position: relative;
+        z-index: 2;
     }
 
     .lexicon-input button,
@@ -655,6 +667,8 @@ input[type="text"] {
         padding: 15px;
         font-size: 16px;
         min-height: 44px;
+        position: relative;
+        z-index: 2;
     }
 
     /* Prevent zoom on input focus */
@@ -665,17 +679,18 @@ input[type="text"] {
 
 /* Remove default iOS input styling */
 input[type="text"] {
-    -webkit-appearance: none;
-    appearance: none;
-    border-radius: 8px;
-    background-color: white;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    border-radius: 8px !important;
+    background-color: white !important;
+    font-size: 16px !important;
 }
 
 /* Focus states */
 input[type="text"]:focus {
-    outline: none;
-    border-color: #2E7D32;
-    box-shadow: 0 0 0 2px rgba(27, 94, 32, 0.2);
+    outline: none !important;
+    border-color: #2E7D32 !important;
+    box-shadow: 0 0 0 2px rgba(27, 94, 32, 0.2) !important;
 }
 
 /* Placeholder styling */
@@ -756,8 +771,8 @@ button {
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: bold;
-    background-color: #1B5E20; /* Dark green */
-    color: white;
+    background-color: #1B5E20 !important; /* Dark green with !important to override any other styles */
+    color: white !important;
     min-width: 120px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     text-transform: uppercase;
@@ -819,29 +834,15 @@ button:active {
 
 /* Settings button */
 #settingsButton {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #1B5E20; /* Dark green */
-    color: white;
-    padding: 12px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    font-size: 1.2em;
-    min-width: auto;
+    display: none; /* Hide the settings button */
 }
 
-/* Reset button */
+/* Reset button - adjust position since settings button is hidden */
 #resetButton {
     position: fixed;
     bottom: 20px;
-    right: 80px;
-    background-color: #1B5E20; /* Dark green */
+    right: 20px; /* Move to where settings button was */
+    background-color: #1B5E20;
     color: white;
     padding: 12px;
     border-radius: 50%;

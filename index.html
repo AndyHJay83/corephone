@@ -218,11 +218,13 @@
     <script>
         // Prevent double-tap zoom
         document.addEventListener('touchend', function(e) {
-            e.preventDefault();
+            if (!e.target.matches('input[type="text"]')) {
+                e.preventDefault();
+            }
         }, { passive: false });
 
         // Prevent double-tap zoom on specific elements
-        document.querySelectorAll('input, button, .results-container').forEach(element => {
+        document.querySelectorAll('button, .results-container').forEach(element => {
             element.addEventListener('touchend', function(e) {
                 e.preventDefault();
             }, { passive: false });
@@ -266,6 +268,10 @@
             // Prevent zoom on focus
             input.addEventListener('focus', function() {
                 this.style.fontSize = '16px';
+                // Scroll the input into view
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
             });
 
             // Handle input events
@@ -288,6 +294,11 @@
             input.addEventListener('touchend', function(e) {
                 e.stopPropagation();
             }, { passive: false });
+
+            // Ensure keyboard shows up
+            input.addEventListener('click', function() {
+                this.focus();
+            });
         });
 
         // Settings Modal Functions
