@@ -105,14 +105,11 @@
                 <!-- LEXICON feature -->
                 <div id="lexiconFeature" class="feature-section" style="display: none;">
                     <div class="lexicon-input">
-                        <input type="tel" 
+                        <input type="text" 
                                id="lexiconPositions" 
-                               inputmode="numeric" 
-                               pattern="[0-9]*"
                                placeholder="Enter positions (e.g., 13)" 
                                maxlength="5"
-                               autocomplete="off"
-                               oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                               autocomplete="off">
                         <button id="lexiconFilterButton">DONE</button>
                     </div>
                     <div class="lexicon-help">

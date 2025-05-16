@@ -607,7 +607,7 @@ input[type="text"] {
 }
 
 /* Remove default iOS input styling */
-input[type="tel"] {
+input[type="text"] {
     -webkit-appearance: none !important;
     appearance: none !important;
     border-radius: 8px !important;
@@ -616,14 +616,14 @@ input[type="tel"] {
 }
 
 /* Focus states */
-input[type="tel"]:focus {
+input[type="text"]:focus {
     outline: none !important;
     border-color: #2E7D32 !important;
     box-shadow: 0 0 0 2px rgba(27, 94, 32, 0.2) !important;
 }
 
 /* Placeholder styling */
-input[type="tel"]::placeholder {
+input[type="text"]::placeholder {
     color: #999;
     opacity: 1;
 }
