@@ -407,30 +407,7 @@ input:checked + .slider:before {
     }
 
     .toggles-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .feature-toggles {
-        width: 100%;
-        justify-content: space-between;
-        padding: 0 10px;
-    }
-
-    .mode-label, .toggle-label {
-        font-size: 12px;
-    }
-
-    .switch {
-        width: 50px;
-        height: 24px;
-    }
-
-    .slider:before {
-        height: 20px;
-        width: 20px;
-        left: 2px;
-        bottom: 2px;
+        display: none; /* Hide all toggles on mobile */
     }
 
     .word-count {

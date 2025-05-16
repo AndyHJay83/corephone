@@ -500,10 +500,10 @@ function resetApp() {
     hasO = null;
     currentFilteredWordsForVowels = [];
     
-    // Clear all results
-    displayResults([]);
+    // Clear all results and show full wordlist
+    displayResults(originalFilteredWords);
     
-    // Reset all features except O? and CURVED which should be completed by default
+    // Reset all features
     const features = [
         'consonantQuestion',
         'position1Feature',
@@ -517,21 +517,28 @@ function resetApp() {
     features.forEach(featureId => {
         const feature = document.getElementById(featureId);
         if (feature) {
-            // Don't remove 'completed' class from O? and CURVED features
-            if (featureId !== 'oFeature' && featureId !== 'curvedFeature') {
-                feature.classList.remove('completed');
-            }
-            
-            // For LEXICON feature, ensure it's not completed if the mode is enabled
-            if (featureId === 'lexiconFeature' && isLexiconMode) {
-                feature.classList.remove('completed');
-                console.log('LEXICON feature reset - mode enabled, removing completed class');
-            }
+            // Remove completed class from all features
+            feature.classList.remove('completed');
+            // Hide all features initially
+            feature.style.display = 'none';
         }
     });
     
-    // Show the first feature
-    showNextFeature();
+    // Reset all toggles to their default state
+    document.getElementById('modeToggle').checked = true;
+    document.getElementById('lexiconToggle').checked = true;
+    document.getElementById('vowelToggle').checked = true;
+    document.getElementById('shapeToggle').checked = true;
+    
+    // Reset all input fields
+    document.getElementById('lexiconPositions').value = '';
+    document.getElementById('position1Input').value = '';
+    
+    // Show the first feature (consonant question)
+    document.getElementById('consonantQuestion').style.display = 'block';
+    
+    // Update word count
+    updateWordCount(originalFilteredWords.length);
 }
 
 // Function to toggle mode
