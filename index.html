@@ -105,7 +105,13 @@
                 <!-- LEXICON feature -->
                 <div id="lexiconFeature" class="feature-section" style="display: none;">
                     <div class="lexicon-input">
-                        <input type="text" id="lexiconPositions" placeholder="Enter positions (e.g., 13)" maxlength="5">
+                        <input type="number" 
+                               id="lexiconPositions" 
+                               inputmode="numeric" 
+                               pattern="[0-9]*"
+                               placeholder="Enter positions (e.g., 13)" 
+                               maxlength="5"
+                               autocomplete="off">
                         <button id="lexiconFilterButton">DONE</button>
                     </div>
                     <div class="lexicon-help">
@@ -320,6 +326,34 @@
 
         // Settings button click handler
         document.getElementById('settingsButton').addEventListener('click', showSettings);
+
+        // Numpad functionality
+        let lexiconInput = '';
+        const lexiconDisplay = document.getElementById('lexiconDisplay');
+        const maxLength = 5;
+
+        document.querySelectorAll('.numpad-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const value = this.textContent;
+                
+                if (value === 'C') {
+                    // Clear
+                    lexiconInput = '';
+                } else if (value === '⌫') {
+                    // Backspace
+                    lexiconInput = lexiconInput.slice(0, -1);
+                } else if (lexiconInput.length < maxLength) {
+                    // Add number
+                    lexiconInput += value;
+                }
+                
+                // Update display
+                lexiconDisplay.textContent = lexiconInput || 'Enter positions';
+                
+                // Update the hidden input for the filter function
+                document.getElementById('lexiconPositions').value = lexiconInput;
+            });
+        });
     </script>
 </body>
 </html> 

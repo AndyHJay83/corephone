@@ -584,7 +584,7 @@ input[type="text"] {
     height: calc(100vh - 180px);
 }
 
-/* LEXICON Feature */
+/* Input fields and their containers */
 .lexicon-input,
 .position-input {
     display: flex;
@@ -613,45 +613,20 @@ input[type="text"] {
     z-index: 2;
 }
 
-.lexicon-input button,
-.position-input button {
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    background-color: #1B5E20 !important;
-    color: white !important;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
+/* Remove spinner buttons from number input */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
-    appearance: none;
     margin: 0;
-    position: relative;
-    z-index: 2;
 }
 
-/* Help text */
-.lexicon-help {
-    color: #666;
-    font-size: 14px;
-    text-align: center;
-    margin: 10px 0;
-    padding: 0 10px;
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 /* Mobile-specific improvements */
 @media (max-width: 600px) {
-    .lexicon-input,
-    .position-input {
-        padding: 5px;
-        position: relative;
-        z-index: 1;
-    }
-
-    .lexicon-input input,
-    .position-input input {
+    .lexicon-input input {
         padding: 15px;
         font-size: 16px !important;
         border-width: 2px;
@@ -660,20 +635,7 @@ input[type="text"] {
         border-radius: 8px;
         position: relative;
         z-index: 2;
-    }
-
-    .lexicon-input button,
-    .position-input button {
-        padding: 15px;
-        font-size: 16px;
-        min-height: 44px;
-        position: relative;
-        z-index: 2;
-    }
-
-    /* Prevent zoom on input focus */
-    input[type="text"] {
-        font-size: 16px !important;
+        text-align: center;
     }
 }
 
