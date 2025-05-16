@@ -590,17 +590,6 @@ input[type="text"] {
     z-index: 2;
 }
 
-/* Remove spinner buttons from number input */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type="number"] {
-    -moz-appearance: textfield;
-}
-
 /* Mobile-specific improvements */
 @media (max-width: 600px) {
     .lexicon-input input {
@@ -613,11 +602,12 @@ input[type="number"] {
         position: relative;
         z-index: 2;
         text-align: center;
+        min-height: 44px;
     }
 }
 
 /* Remove default iOS input styling */
-input[type="text"] {
+input[type="tel"] {
     -webkit-appearance: none !important;
     appearance: none !important;
     border-radius: 8px !important;
@@ -626,14 +616,14 @@ input[type="text"] {
 }
 
 /* Focus states */
-input[type="text"]:focus {
+input[type="tel"]:focus {
     outline: none !important;
     border-color: #2E7D32 !important;
     box-shadow: 0 0 0 2px rgba(27, 94, 32, 0.2) !important;
 }
 
 /* Placeholder styling */
-input[type="text"]::placeholder {
+input[type="tel"]::placeholder {
     color: #999;
     opacity: 1;
 }
