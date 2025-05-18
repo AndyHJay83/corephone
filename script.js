@@ -368,8 +368,11 @@ function handleVowelSelection(includeVowel) {
         document.getElementById('vowelFeature').classList.add('completed');
         // Update currentFilteredWords with the vowel-filtered results
         currentFilteredWords = [...currentFilteredWordsForVowels];
-        console.log('Vowel feature completed, moving to next feature');
-        showNextFeature();
+        console.log('Vowel feature completed, moving to LEXICON feature');
+        
+        // Hide vowel feature and show LEXICON feature
+        document.getElementById('vowelFeature').style.display = 'none';
+        document.getElementById('lexiconFeature').style.display = 'block';
     }
 }
 
@@ -540,7 +543,7 @@ function showNextFeature() {
             vowelLetter.style.display = 'none';
         }
     }
-    else if (!lexiconCompleted) {
+    else if (!lexiconCompleted && document.getElementById('vowelFeature').classList.contains('completed')) {
         console.log('Showing LEXICON feature');
         document.getElementById('lexiconFeature').style.display = 'block';
     }
