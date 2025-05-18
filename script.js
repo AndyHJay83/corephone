@@ -1,7 +1,7 @@
 let wordList = [];
 let totalWords = 0;
 let isNewMode = true;
-let isLexiconMode = true;
+let isColour3Mode = true;
 let isVowelMode = true;
 let isShapeMode = true;
 let currentFilteredWords = [];
@@ -377,7 +377,7 @@ function showNextFeature() {
     console.log('Current states:', {
         hasAdjacentConsonants,
         isVowelMode,
-        isLexiconMode,
+        isColour3Mode,
         isShapeMode,
         position1Completed: document.getElementById('position1Feature').classList.contains('completed'),
         vowelCompleted: document.getElementById('vowelFeature').classList.contains('completed'),
@@ -448,7 +448,7 @@ function showNextFeature() {
             vowelLetter.style.display = 'none';
         }
     }
-    else if (isLexiconMode && !document.getElementById('colour3Feature').classList.contains('completed')) {
+    else if (isColour3Mode && !document.getElementById('colour3Feature').classList.contains('completed')) {
         console.log('Showing COLOUR3 feature');
         const colour3Feature = document.getElementById('colour3Feature');
         colour3Feature.style.display = 'block';
@@ -558,7 +558,7 @@ function toggleFeature(featureId) {
     
     switch(featureId) {
         case 'colour3Feature':
-            isLexiconMode = isEnabled;
+            isColour3Mode = isEnabled;
             break;
         case 'vowelFeature':
             isVowelMode = isEnabled;
@@ -632,23 +632,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('modeToggle').addEventListener('change', toggleMode);
     
     // Feature toggle listeners
-    document.getElementById('lexiconToggle').addEventListener('change', () => toggleFeature('colour3Feature'));
+    document.getElementById('colour3Toggle').addEventListener('change', () => toggleFeature('colour3Feature'));
     document.getElementById('vowelToggle').addEventListener('change', () => toggleFeature('vowelFeature'));
     document.getElementById('shapeToggle').addEventListener('change', () => toggleFeature('shapeFeature'));
     
     // Share button listener
     document.getElementById('shareButton').addEventListener('click', exportWordlist);
     
-    // Add skip button handler
-    document.getElementById('lexiconSkipButton').addEventListener('click', () => {
-        console.log('COLOUR3 feature skipped');
-        document.getElementById('colour3Feature').classList.add('completed');
-        // Keep the current word list unchanged
-        showNextFeature();
-    });
-    
     // COLOUR3 feature
-    document.getElementById('lexiconYesBtn').addEventListener('click', () => {
+    document.getElementById('colour3YesBtn').addEventListener('click', () => {
         console.log('COLOUR3 YES selected');
         const filteredWords = filterWordsByColour3(currentFilteredWords);
         document.getElementById('colour3Feature').classList.add('completed');
@@ -656,7 +648,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         showNextFeature();
     });
     
-    document.getElementById('lexiconSkipButton').addEventListener('click', () => {
+    document.getElementById('colour3SkipButton').addEventListener('click', () => {
         console.log('COLOUR3 SKIP selected');
         document.getElementById('colour3Feature').classList.add('completed');
         showNextFeature();

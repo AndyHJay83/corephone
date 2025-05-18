@@ -191,13 +191,9 @@ body {
 }
 
 /* Ensure consistent styling across all feature sections */
-#consonantQuestion, #vowelFeature, #position1Feature, #lexiconFeature {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
-    width: 100%;
+#consonantQuestion, #vowelFeature, #position1Feature, #colour3Feature {
+    display: none;
+    margin-bottom: 20px;
 }
 
 /* Make sure the vowel buttons match the consonant buttons */
