@@ -600,7 +600,7 @@ function exportWordlist() {
 
 // Function to filter words by COLOUR3
 function filterWordsByColour3(words) {
-    const colour3Letters = new Set(['J', 'F', 'M', 'A', 'S', 'O', 'N', 'D']);
+    const colour3Letters = new Set(['A', 'B', 'C', 'E', 'G', 'I', 'L', 'N', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'W', 'Y']);
     console.log('COLOUR3 letters:', Array.from(colour3Letters));
     console.log('Total words before filtering:', words.length);
     
