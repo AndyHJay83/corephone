@@ -602,20 +602,36 @@ function exportWordlist() {
 function filterWordsByColour3(words) {
     const colour3Letters = new Set(['J', 'F', 'M', 'A', 'S', 'O', 'N', 'D']);
     console.log('COLOUR3 letters:', Array.from(colour3Letters));
+    console.log('Total words before filtering:', words.length);
     
-    return words.filter(word => {
+    const filteredWords = words.filter(word => {
         // Check only position 5 (0-based index 4)
         const pos5 = word.length > 4 ? word[4].toUpperCase() : null;
         
-        console.log(`Word: ${word}, Position 5: ${pos5}`);
+        // Detailed logging for debugging
+        console.log(`\nAnalyzing word: ${word}`);
+        console.log(`Word length: ${word.length}`);
+        console.log(`Position 5 character: ${pos5}`);
+        console.log(`Is character in COLOUR3 set? ${pos5 && colour3Letters.has(pos5)}`);
         
         // Check if position 5 has a letter from our set
         const hasColour3Letter = pos5 && colour3Letters.has(pos5);
         
-        console.log(`Word ${word} ${hasColour3Letter ? 'KEEP' : 'REMOVE'}: Position 5 (${pos5}) ${pos5 && colour3Letters.has(pos5) ? 'matches' : 'does not match'}`);
+        if (hasColour3Letter) {
+            console.log(`KEEPING word "${word}" - Position 5 (${pos5}) matches COLOUR3 set`);
+        } else {
+            console.log(`REMOVING word "${word}" - Position 5 (${pos5}) does not match COLOUR3 set`);
+        }
         
         return hasColour3Letter;
     });
+    
+    console.log('\nFiltering Summary:');
+    console.log('Words before filtering:', words.length);
+    console.log('Words after filtering:', filteredWords.length);
+    console.log('Removed words:', words.length - filteredWords.length);
+    
+    return filteredWords;
 }
 
 // Event Listeners
