@@ -642,17 +642,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Share button listener
     document.getElementById('shareButton').addEventListener('click', exportWordlist);
     
-    // LEXICON feature
-    document.getElementById('lexiconFilterButton').addEventListener('click', () => {
-        const positions = document.getElementById('lexiconPositions').value;
-        if (positions) {
-            const filteredWords = filterWordsByCurvedPositions(currentFilteredWords, positions);
-            document.getElementById('lexiconFeature').classList.add('completed');
-            displayResults(filteredWords);
-            showNextFeature();
-        }
-    });
-    
     // Add skip button handler
     document.getElementById('lexiconSkipButton').addEventListener('click', () => {
         console.log('LEXICON feature skipped');
@@ -909,13 +898,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             modal.style.display = 'none';
         }
     };
-    
-    // Enter key handlers
-    document.getElementById('lexiconPositions').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            document.getElementById('lexiconFilterButton').click();
-        }
-    });
     
     document.getElementById('position1Input').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
