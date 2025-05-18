@@ -531,7 +531,7 @@ function resetApp() {
     
     // Reset all toggles to their default state
     document.getElementById('modeToggle').checked = true;
-    document.getElementById('lexiconToggle').checked = true;
+    document.getElementById('colour3Toggle').checked = true;
     document.getElementById('vowelToggle').checked = true;
     document.getElementById('shapeToggle').checked = true;
     
