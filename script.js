@@ -808,7 +808,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const filteredWords = filterWordsByEee(currentFilteredWords, 'E');
         eeeCompleted = true;
         displayResults(filteredWords);
-        showNextFeature();
+        // Hide EEE? feature and show LEXICON feature directly
+        document.getElementById('eeeFeature').style.display = 'none';
+        document.getElementById('lexiconFeature').style.display = 'block';
     });
     
     document.getElementById('eeeYesBtn').addEventListener('click', () => {
@@ -816,7 +818,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const filteredWords = filterWordsByEee(currentFilteredWords, 'YES');
         eeeCompleted = true;
         displayResults(filteredWords);
-        showNextFeature();
+        // Hide EEE? feature and show LEXICON feature directly
+        document.getElementById('eeeFeature').style.display = 'none';
+        document.getElementById('lexiconFeature').style.display = 'block';
     });
     
     document.getElementById('eeeNoBtn').addEventListener('click', () => {
@@ -824,7 +828,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const filteredWords = filterWordsByEee(currentFilteredWords, 'NO');
         eeeCompleted = true;
         displayResults(filteredWords);
-        showNextFeature();
+        // Hide EEE? feature and show LEXICON feature directly
+        document.getElementById('eeeFeature').style.display = 'none';
+        document.getElementById('lexiconFeature').style.display = 'block';
     });
     
     // Mode toggle listener
