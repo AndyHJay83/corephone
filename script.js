@@ -14,6 +14,7 @@ let originalFilteredWords = [];
 let hasAdjacentConsonants = null;
 let hasO = null;
 let selectedCurvedLetter = null;
+let eeeCompleted = false;
 
 // Function to check if a word has any adjacent consonants
 function hasWordAdjacentConsonants(word) {
@@ -371,10 +372,50 @@ function handleVowelSelection(includeVowel) {
     }
 }
 
+// Function to filter words by EEE? feature
+function filterWordsByEee(words, mode) {
+    console.log('Filtering words by EEE? mode:', mode);
+    console.log('Total words before filtering:', words.length);
+    
+    const filteredWords = words.filter(word => {
+        if (word.length < 2) return false;
+        
+        const secondChar = word[1].toUpperCase();
+        console.log(`Word: ${word}, Second character: ${secondChar}`);
+        
+        switch(mode) {
+            case 'E':
+                const hasE = secondChar === 'E';
+                console.log(`Word ${word} ${hasE ? 'KEEP' : 'REMOVE'}: Second character ${secondChar} ${hasE ? 'is' : 'is not'} E`);
+                return hasE;
+                
+            case 'YES':
+                const yesLetters = new Set(['B', 'C', 'D', 'G', 'P', 'T', 'V', 'Z']);
+                const hasYesLetter = yesLetters.has(secondChar);
+                console.log(`Word ${word} ${hasYesLetter ? 'KEEP' : 'REMOVE'}: Second character ${secondChar} ${hasYesLetter ? 'is' : 'is not'} in YES set`);
+                return hasYesLetter;
+                
+            case 'NO':
+                const noLetters = new Set(['B', 'C', 'D', 'G', 'P', 'T', 'V', 'Z']);
+                const hasNoLetter = noLetters.has(secondChar);
+                console.log(`Word ${word} ${!hasNoLetter ? 'KEEP' : 'REMOVE'}: Second character ${secondChar} ${hasNoLetter ? 'is' : 'is not'} in NO set`);
+                return !hasNoLetter;
+        }
+    });
+    
+    console.log('Filtering Summary:');
+    console.log('Words before filtering:', words.length);
+    console.log('Words after filtering:', filteredWords.length);
+    console.log('Removed words:', words.length - filteredWords.length);
+    
+    return filteredWords;
+}
+
 // Function to show next feature
 function showNextFeature() {
     console.log('Showing next feature...');
     console.log('Current states:', {
+        eeeCompleted,
         hasAdjacentConsonants,
         isVowelMode,
         isColour3Mode,
@@ -389,6 +430,7 @@ function showNextFeature() {
     
     // First hide all features
     const allFeatures = [
+        'eeeFeature',
         'consonantQuestion',
         'position1Feature',
         'vowelFeature',
@@ -403,7 +445,11 @@ function showNextFeature() {
     });
     
     // Then show the appropriate feature based on the current state
-    if (hasAdjacentConsonants === null) {
+    if (!eeeCompleted) {
+        console.log('Showing EEE? feature');
+        document.getElementById('eeeFeature').style.display = 'block';
+    }
+    else if (hasAdjacentConsonants === null) {
         console.log('Showing consonant question');
         const consonantQuestion = document.getElementById('consonantQuestion');
         console.log('consonantQuestion element:', consonantQuestion);
@@ -646,8 +692,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('oFeature').style.display = 'none';
     document.getElementById('curvedFeature').style.display = 'none';
     
-    // Show consonant question first
-    document.getElementById('consonantQuestion').style.display = 'block';
+    // Show EEE? feature first
+    document.getElementById('eeeFeature').style.display = 'block';
+    
+    // EEE? feature buttons
+    document.getElementById('eeeButton').addEventListener('click', () => {
+        console.log('EEE? E button clicked');
+        const filteredWords = filterWordsByEee(currentFilteredWords, 'E');
+        eeeCompleted = true;
+        displayResults(filteredWords);
+        showNextFeature();
+    });
+    
+    document.getElementById('eeeYesBtn').addEventListener('click', () => {
+        console.log('EEE? YES button clicked');
+        const filteredWords = filterWordsByEee(currentFilteredWords, 'YES');
+        eeeCompleted = true;
+        displayResults(filteredWords);
+        showNextFeature();
+    });
+    
+    document.getElementById('eeeNoBtn').addEventListener('click', () => {
+        console.log('EEE? NO button clicked');
+        const filteredWords = filterWordsByEee(currentFilteredWords, 'NO');
+        eeeCompleted = true;
+        displayResults(filteredWords);
+        showNextFeature();
+    });
     
     // Mode toggle listener
     document.getElementById('modeToggle').addEventListener('change', toggleMode);
