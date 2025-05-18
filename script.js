@@ -405,7 +405,14 @@ function showNextFeature() {
     // Then show the appropriate feature based on the current state
     if (hasAdjacentConsonants === null) {
         console.log('Showing consonant question');
-        document.getElementById('consonantQuestion').style.display = 'block';
+        const consonantQuestion = document.getElementById('consonantQuestion');
+        console.log('consonantQuestion element:', consonantQuestion);
+        if (consonantQuestion) {
+            consonantQuestion.style.display = 'block';
+            console.log('Consonant question display set to block');
+        } else {
+            console.error('Consonant question element not found!');
+        }
     }
     else if (!document.getElementById('position1Feature').classList.contains('completed')) {
         console.log('Showing Position 1 feature');
@@ -674,9 +681,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const consonantNoBtn = document.getElementById('consonantNoBtn');
     
     console.log('Setting up consonant question buttons');
+    console.log('consonantYesBtn:', consonantYesBtn);
+    console.log('consonantNoBtn:', consonantNoBtn);
     
     consonantYesBtn.addEventListener('click', () => {
         console.log('Consonant question: YES selected');
+        console.log('Current word list length:', currentFilteredWords.length);
         hasAdjacentConsonants = true;
         
         // Filter to keep ONLY words that have adjacent consonants
@@ -709,6 +719,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     consonantNoBtn.addEventListener('click', () => {
         console.log('Consonant question: NO selected');
+        console.log('Current word list length:', currentFilteredWords.length);
         hasAdjacentConsonants = false;
         
         // Filter to keep ONLY words that do NOT have adjacent consonants
