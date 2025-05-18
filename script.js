@@ -449,11 +449,9 @@ function showNextFeature() {
         }
     }
     else if (isLexiconMode && !document.getElementById('lexiconFeature').classList.contains('completed')) {
-        console.log('Showing LEXICON feature');
+        console.log('Showing COLOUR3 feature');
         const lexiconFeature = document.getElementById('lexiconFeature');
         lexiconFeature.style.display = 'block';
-        // Clear any previous input
-        document.getElementById('lexiconPositions').value = '';
     }
     else if (isShapeMode && !document.getElementById('shapeFeature').classList.contains('completed')) {
         console.log('Showing SHAPE feature');
@@ -538,7 +536,6 @@ function resetApp() {
     document.getElementById('shapeToggle').checked = true;
     
     // Reset all input fields
-    document.getElementById('lexiconPositions').value = '';
     document.getElementById('position1Input').value = '';
     
     // Show the first feature (consonant question)
