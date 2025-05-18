@@ -15,6 +15,7 @@ let hasAdjacentConsonants = null;
 let hasO = null;
 let selectedCurvedLetter = null;
 let eeeCompleted = false;
+let lexiconCompleted = false;
 
 // Function to check if a word has any adjacent consonants
 function hasWordAdjacentConsonants(word) {
@@ -411,11 +412,55 @@ function filterWordsByEee(words, mode) {
     return filteredWords;
 }
 
+// Function to filter words by LEXICON feature
+function filterWordsByLexicon(words, positions) {
+    console.log('Filtering words by LEXICON positions:', positions);
+    console.log('Total words before filtering:', words.length);
+    
+    const curvedLetters = new Set(['B', 'C', 'D', 'G', 'J', 'O', 'P', 'Q', 'R', 'S', 'U']);
+    const positionArray = positions.split('').map(Number);
+    
+    const filteredWords = words.filter(word => {
+        if (word.length < Math.max(...positionArray)) return false;
+        
+        // Check each position
+        for (let i = 0; i < word.length; i++) {
+            const pos = i + 1; // Convert to 1-based position
+            const letter = word[i].toUpperCase();
+            
+            if (positionArray.includes(pos)) {
+                // This position should have a curved letter
+                if (!curvedLetters.has(letter)) {
+                    console.log(`Word ${word} REMOVED: Position ${pos} has ${letter} which is not curved`);
+                    return false;
+                }
+            } else {
+                // This position should have a straight letter
+                if (curvedLetters.has(letter)) {
+                    console.log(`Word ${word} REMOVED: Position ${pos} has ${letter} which is curved`);
+                    return false;
+                }
+            }
+        }
+        
+        console.log(`Word ${word} KEPT: All positions match requirements`);
+        return true;
+    });
+    
+    console.log('Filtering Summary:');
+    console.log('Words before filtering:', words.length);
+    console.log('Words after filtering:', filteredWords.length);
+    console.log('Removed words:', words.length - filteredWords.length);
+    
+    return filteredWords;
+}
+
 // Function to show next feature
 function showNextFeature() {
     console.log('Showing next feature...');
     console.log('Current states:', {
         eeeCompleted,
+        lexiconCompleted,
         hasAdjacentConsonants,
         isVowelMode,
         isColour3Mode,
@@ -431,6 +476,7 @@ function showNextFeature() {
     // First hide all features
     const allFeatures = [
         'eeeFeature',
+        'lexiconFeature',
         'consonantQuestion',
         'position1Feature',
         'vowelFeature',
@@ -448,6 +494,10 @@ function showNextFeature() {
     if (!eeeCompleted) {
         console.log('Showing EEE? feature');
         document.getElementById('eeeFeature').style.display = 'block';
+    }
+    else if (!lexiconCompleted) {
+        console.log('Showing LEXICON feature');
+        document.getElementById('lexiconFeature').style.display = 'block';
     }
     else if (hasAdjacentConsonants === null) {
         console.log('Showing consonant question');
@@ -694,6 +744,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Show EEE? feature first
     document.getElementById('eeeFeature').style.display = 'block';
+    
+    // LEXICON feature
+    document.getElementById('lexiconButton').addEventListener('click', () => {
+        const input = document.getElementById('lexiconInput').value.trim();
+        if (input) {
+            console.log('LEXICON input:', input);
+            const filteredWords = filterWordsByLexicon(currentFilteredWords, input);
+            lexiconCompleted = true;
+            displayResults(filteredWords);
+            showNextFeature();
+        }
+    });
+    
+    document.getElementById('lexiconSkipButton').addEventListener('click', () => {
+        console.log('LEXICON SKIP selected');
+        lexiconCompleted = true;
+        showNextFeature();
+    });
+    
+    document.getElementById('lexiconInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            document.getElementById('lexiconButton').click();
+        }
+    });
     
     // EEE? feature buttons
     document.getElementById('eeeButton').addEventListener('click', () => {
