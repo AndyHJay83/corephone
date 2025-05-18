@@ -421,26 +421,56 @@ function filterWordsByLexicon(words, positions) {
     console.log('Total words before filtering:', words.length);
     
     const curvedLetters = new Set(['B', 'C', 'D', 'G', 'J', 'O', 'P', 'Q', 'R', 'S', 'U']);
+    
+    // Special case: if input is "0", filter for words with all straight letters in first 5 positions
+    if (positions === "0") {
+        const filteredWords = words.filter(word => {
+            // Check first 5 positions (or word length if shorter)
+            for (let i = 0; i < Math.min(5, word.length); i++) {
+                if (curvedLetters.has(word[i].toUpperCase())) {
+                    console.log(`Word ${word} REMOVED: Position ${i + 1} has curved letter ${word[i]}`);
+                    return false;
+                }
+            }
+            console.log(`Word ${word} KEPT: All first 5 positions have straight letters`);
+            return true;
+        });
+        
+        console.log('Filtering Summary (0 case):');
+        console.log('Words before filtering:', words.length);
+        console.log('Words after filtering:', filteredWords.length);
+        console.log('Removed words:', words.length - filteredWords.length);
+        
+        return filteredWords;
+    }
+    
+    // Convert positions string to array of numbers
     const positionArray = positions.split('').map(Number);
+    console.log('Processing positions:', positionArray);
     
     const filteredWords = words.filter(word => {
-        if (word.length < Math.max(...positionArray)) return false;
+        // Skip words shorter than 5 characters
+        if (word.length < 5) {
+            console.log(`Word ${word} REMOVED: Too short (length ${word.length})`);
+            return false;
+        }
         
-        // Check each position
-        for (let i = 0; i < word.length; i++) {
+        // Check each position from 1 to 5
+        for (let i = 0; i < 5; i++) {
             const pos = i + 1; // Convert to 1-based position
             const letter = word[i].toUpperCase();
+            const isCurved = curvedLetters.has(letter);
             
             if (positionArray.includes(pos)) {
                 // This position should have a curved letter
-                if (!curvedLetters.has(letter)) {
-                    console.log(`Word ${word} REMOVED: Position ${pos} has ${letter} which is not curved`);
+                if (!isCurved) {
+                    console.log(`Word ${word} REMOVED: Position ${pos} has straight letter ${letter}`);
                     return false;
                 }
             } else {
                 // This position should have a straight letter
-                if (curvedLetters.has(letter)) {
-                    console.log(`Word ${word} REMOVED: Position ${pos} has ${letter} which is curved`);
+                if (isCurved) {
+                    console.log(`Word ${word} REMOVED: Position ${pos} has curved letter ${letter}`);
                     return false;
                 }
             }
