@@ -381,7 +381,7 @@ function showNextFeature() {
         isShapeMode,
         position1Completed: document.getElementById('position1Feature').classList.contains('completed'),
         vowelCompleted: document.getElementById('vowelFeature').classList.contains('completed'),
-        lexiconCompleted: document.getElementById('lexiconFeature').classList.contains('completed'),
+        colour3Completed: document.getElementById('colour3Feature').classList.contains('completed'),
         shapeCompleted: document.getElementById('shapeFeature').classList.contains('completed'),
         oCompleted: document.getElementById('oFeature').classList.contains('completed'),
         curvedCompleted: document.getElementById('curvedFeature').classList.contains('completed')
@@ -392,7 +392,7 @@ function showNextFeature() {
         'consonantQuestion',
         'position1Feature',
         'vowelFeature',
-        'lexiconFeature',
+        'colour3Feature',
         'shapeFeature',
         'oFeature',
         'curvedFeature'
@@ -448,10 +448,10 @@ function showNextFeature() {
             vowelLetter.style.display = 'none';
         }
     }
-    else if (isLexiconMode && !document.getElementById('lexiconFeature').classList.contains('completed')) {
+    else if (isLexiconMode && !document.getElementById('colour3Feature').classList.contains('completed')) {
         console.log('Showing COLOUR3 feature');
-        const lexiconFeature = document.getElementById('lexiconFeature');
-        lexiconFeature.style.display = 'block';
+        const colour3Feature = document.getElementById('colour3Feature');
+        colour3Feature.style.display = 'block';
     }
     else if (isShapeMode && !document.getElementById('shapeFeature').classList.contains('completed')) {
         console.log('Showing SHAPE feature');
@@ -513,7 +513,7 @@ function resetApp() {
         'consonantQuestion',
         'position1Feature',
         'vowelFeature',
-        'lexiconFeature',
+        'colour3Feature',
         'shapeFeature',
         'oFeature',
         'curvedFeature'
@@ -551,13 +551,13 @@ function toggleMode() {
     resetApp();
 }
 
-// Function to toggle feature mode
+// Function to toggle feature
 function toggleFeature(featureId) {
     const toggle = document.getElementById(featureId.replace('Feature', 'Toggle'));
     const isEnabled = toggle.checked;
     
     switch(featureId) {
-        case 'lexiconFeature':
+        case 'colour3Feature':
             isLexiconMode = isEnabled;
             break;
         case 'vowelFeature':
@@ -632,7 +632,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('modeToggle').addEventListener('change', toggleMode);
     
     // Feature toggle listeners
-    document.getElementById('lexiconToggle').addEventListener('change', () => toggleFeature('lexiconFeature'));
+    document.getElementById('lexiconToggle').addEventListener('change', () => toggleFeature('colour3Feature'));
     document.getElementById('vowelToggle').addEventListener('change', () => toggleFeature('vowelFeature'));
     document.getElementById('shapeToggle').addEventListener('change', () => toggleFeature('shapeFeature'));
     
@@ -641,8 +641,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Add skip button handler
     document.getElementById('lexiconSkipButton').addEventListener('click', () => {
-        console.log('LEXICON feature skipped');
-        document.getElementById('lexiconFeature').classList.add('completed');
+        console.log('COLOUR3 feature skipped');
+        document.getElementById('colour3Feature').classList.add('completed');
         // Keep the current word list unchanged
         showNextFeature();
     });
@@ -651,14 +651,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('lexiconYesBtn').addEventListener('click', () => {
         console.log('COLOUR3 YES selected');
         const filteredWords = filterWordsByColour3(currentFilteredWords);
-        document.getElementById('lexiconFeature').classList.add('completed');
+        document.getElementById('colour3Feature').classList.add('completed');
         displayResults(filteredWords);
         showNextFeature();
     });
     
     document.getElementById('lexiconSkipButton').addEventListener('click', () => {
         console.log('COLOUR3 SKIP selected');
-        document.getElementById('lexiconFeature').classList.add('completed');
+        document.getElementById('colour3Feature').classList.add('completed');
         showNextFeature();
     });
     
