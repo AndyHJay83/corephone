@@ -966,6 +966,19 @@ function isCurvedLetter(letter) {
 
 // Function to filter words by curved letter positions
 function filterWordsByCurvedPositions(words, positions) {
+    // Special case: if input is "0", filter for words with all straight letters in first 5 positions
+    if (positions === "0") {
+        return words.filter(word => {
+            // Check first 5 positions (or word length if shorter)
+            for (let i = 0; i < Math.min(5, word.length); i++) {
+                if (isCurvedLetter(word[i])) {
+                    return false; // Reject if any curved letter found
+                }
+            }
+            return true; // Keep if all letters are straight
+        });
+    }
+
     // Convert positions string to array of numbers and validate
     const positionArray = positions.split('')
         .map(Number)
