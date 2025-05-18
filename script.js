@@ -573,6 +573,27 @@ function toggleFeature(featureId) {
     showNextFeature();
 }
 
+// Function to export wordlist
+function exportWordlist() {
+    // Create a text file with the current filtered words
+    const text = currentFilteredWords.join('\n');
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `wordlist_${currentFilteredWords.length}_words.txt`;
+    
+    // Append to body, click, and remove
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Clean up the URL object
+    window.URL.revokeObjectURL(url);
+}
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', async () => {
     await loadWordList();
@@ -595,6 +616,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('lexiconToggle').addEventListener('change', () => toggleFeature('lexiconFeature'));
     document.getElementById('vowelToggle').addEventListener('change', () => toggleFeature('vowelFeature'));
     document.getElementById('shapeToggle').addEventListener('change', () => toggleFeature('shapeFeature'));
+    
+    // Share button listener
+    document.getElementById('shareButton').addEventListener('click', exportWordlist);
     
     // LEXICON feature
     document.getElementById('lexiconFilterButton').addEventListener('click', () => {
