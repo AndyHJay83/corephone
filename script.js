@@ -495,10 +495,6 @@ function showNextFeature() {
         console.log('Showing EEE? feature');
         document.getElementById('eeeFeature').style.display = 'block';
     }
-    else if (!lexiconCompleted) {
-        console.log('Showing LEXICON feature');
-        document.getElementById('lexiconFeature').style.display = 'block';
-    }
     else if (hasAdjacentConsonants === null) {
         console.log('Showing consonant question');
         const consonantQuestion = document.getElementById('consonantQuestion');
@@ -543,6 +539,10 @@ function showNextFeature() {
             console.log('No vowels found in current word list');
             vowelLetter.style.display = 'none';
         }
+    }
+    else if (!lexiconCompleted) {
+        console.log('Showing LEXICON feature');
+        document.getElementById('lexiconFeature').style.display = 'block';
     }
     else if (isColour3Mode && !document.getElementById('colour3Feature').classList.contains('completed')) {
         console.log('Showing COLOUR3 feature');
