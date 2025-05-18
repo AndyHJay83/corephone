@@ -594,6 +594,21 @@ function exportWordlist() {
     window.URL.revokeObjectURL(url);
 }
 
+// Function to filter words by COLOUR3
+function filterWordsByColour3(words) {
+    const colour3Letters = new Set(['A', 'B', 'C', 'E', 'G', 'I', 'L', 'N', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'W', 'Y']);
+    
+    return words.filter(word => {
+        // Check first 3 characters
+        for (let i = 0; i < Math.min(3, word.length); i++) {
+            if (colour3Letters.has(word[i].toUpperCase())) {
+                return true; // Keep word if any of first 3 letters are in the set
+            }
+        }
+        return false; // Remove word if none of first 3 letters are in the set
+    });
+}
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', async () => {
     await loadWordList();
@@ -636,6 +651,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('LEXICON feature skipped');
         document.getElementById('lexiconFeature').classList.add('completed');
         // Keep the current word list unchanged
+        showNextFeature();
+    });
+    
+    // COLOUR3 feature
+    document.getElementById('lexiconYesBtn').addEventListener('click', () => {
+        console.log('COLOUR3 YES selected');
+        const filteredWords = filterWordsByColour3(currentFilteredWords);
+        document.getElementById('lexiconFeature').classList.add('completed');
+        displayResults(filteredWords);
+        showNextFeature();
+    });
+    
+    document.getElementById('lexiconSkipButton').addEventListener('click', () => {
+        console.log('COLOUR3 SKIP selected');
+        document.getElementById('lexiconFeature').classList.add('completed');
         showNextFeature();
     });
     
