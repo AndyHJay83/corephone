@@ -604,16 +604,15 @@ function filterWordsByColour3(words) {
     console.log('COLOUR3 letters:', Array.from(colour3Letters));
     
     return words.filter(word => {
-        // Check positions 4 and 5 (0-based index 3 and 4)
-        const pos4 = word.length > 3 ? word[3].toUpperCase() : null;
+        // Check only position 5 (0-based index 4)
         const pos5 = word.length > 4 ? word[4].toUpperCase() : null;
         
-        console.log(`Word: ${word}, Position 4: ${pos4}, Position 5: ${pos5}`);
+        console.log(`Word: ${word}, Position 5: ${pos5}`);
         
-        // Check if either position 4 or 5 has a letter from our set
-        const hasColour3Letter = (pos4 && colour3Letters.has(pos4)) || (pos5 && colour3Letters.has(pos5));
+        // Check if position 5 has a letter from our set
+        const hasColour3Letter = pos5 && colour3Letters.has(pos5);
         
-        console.log(`Word ${word} ${hasColour3Letter ? 'KEEP' : 'REMOVE'}: Position 4 (${pos4}) ${pos4 && colour3Letters.has(pos4) ? 'matches' : 'does not match'}, Position 5 (${pos5}) ${pos5 && colour3Letters.has(pos5) ? 'matches' : 'does not match'}`);
+        console.log(`Word ${word} ${hasColour3Letter ? 'KEEP' : 'REMOVE'}: Position 5 (${pos5}) ${pos5 && colour3Letters.has(pos5) ? 'matches' : 'does not match'}`);
         
         return hasColour3Letter;
     });
