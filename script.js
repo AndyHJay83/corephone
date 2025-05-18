@@ -771,12 +771,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('oFeature').classList.add('completed');
     document.getElementById('curvedFeature').classList.add('completed');
     
-    // Hide O? and CURVED features initially
-    document.getElementById('oFeature').style.display = 'none';
-    document.getElementById('curvedFeature').style.display = 'none';
+    // Hide all features initially except EEE?
+    const allFeatures = [
+        'lexiconFeature',
+        'consonantQuestion',
+        'position1Feature',
+        'vowelFeature',
+        'colour3Feature',
+        'shapeFeature',
+        'oFeature',
+        'curvedFeature'
+    ];
+    
+    allFeatures.forEach(featureId => {
+        document.getElementById(featureId).style.display = 'none';
+    });
     
     // Show EEE? feature first
     document.getElementById('eeeFeature').style.display = 'block';
+    
+    // Reset lexicon state
+    lexiconCompleted = false;
     
     // LEXICON feature
     document.getElementById('lexiconButton').addEventListener('click', () => {
@@ -786,14 +801,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const filteredWords = filterWordsByLexicon(currentFilteredWords, input);
             lexiconCompleted = true;
             displayResults(filteredWords);
-            showNextFeature();
+            // Hide LEXICON and show Consonants Together
+            document.getElementById('lexiconFeature').style.display = 'none';
+            document.getElementById('consonantQuestion').style.display = 'block';
         }
     });
     
     document.getElementById('lexiconSkipButton').addEventListener('click', () => {
         console.log('LEXICON SKIP selected');
         lexiconCompleted = true;
-        showNextFeature();
+        // Hide LEXICON and show Consonants Together
+        document.getElementById('lexiconFeature').style.display = 'none';
+        document.getElementById('consonantQuestion').style.display = 'block';
     });
     
     document.getElementById('lexiconInput').addEventListener('keypress', (e) => {
@@ -808,7 +827,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const filteredWords = filterWordsByEee(currentFilteredWords, 'E');
         eeeCompleted = true;
         displayResults(filteredWords);
-        // Hide EEE? feature and show LEXICON feature directly
+        // Hide EEE? and show LEXICON
         document.getElementById('eeeFeature').style.display = 'none';
         document.getElementById('lexiconFeature').style.display = 'block';
     });
@@ -818,7 +837,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const filteredWords = filterWordsByEee(currentFilteredWords, 'YES');
         eeeCompleted = true;
         displayResults(filteredWords);
-        // Hide EEE? feature and show LEXICON feature directly
+        // Hide EEE? and show LEXICON
         document.getElementById('eeeFeature').style.display = 'none';
         document.getElementById('lexiconFeature').style.display = 'block';
     });
@@ -828,7 +847,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const filteredWords = filterWordsByEee(currentFilteredWords, 'NO');
         eeeCompleted = true;
         displayResults(filteredWords);
-        // Hide EEE? feature and show LEXICON feature directly
+        // Hide EEE? and show LEXICON
         document.getElementById('eeeFeature').style.display = 'none';
         document.getElementById('lexiconFeature').style.display = 'block';
     });
