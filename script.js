@@ -603,13 +603,13 @@ function filterWordsByColour3(words) {
     const colour3Letters = new Set(['A', 'B', 'C', 'E', 'G', 'I', 'L', 'N', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'W', 'Y']);
     
     return words.filter(word => {
-        // Check first 3 characters
-        for (let i = 0; i < Math.min(3, word.length); i++) {
+        // Check positions 4 and 5 (0-based index 3 and 4)
+        for (let i = 3; i < Math.min(5, word.length); i++) {
             if (colour3Letters.has(word[i].toUpperCase())) {
-                return true; // Keep word if any of first 3 letters are in the set
+                return true; // Keep word if any of positions 4 or 5 have a letter in the set
             }
         }
-        return false; // Remove word if none of first 3 letters are in the set
+        return false; // Remove word if neither position 4 nor 5 has a letter in the set
     });
 }
 
