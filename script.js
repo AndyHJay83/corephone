@@ -601,15 +601,21 @@ function exportWordlist() {
 // Function to filter words by COLOUR3
 function filterWordsByColour3(words) {
     const colour3Letters = new Set(['A', 'B', 'C', 'E', 'G', 'I', 'L', 'N', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'W', 'Y']);
+    console.log('COLOUR3 letters:', Array.from(colour3Letters));
     
     return words.filter(word => {
         // Check positions 4 and 5 (0-based index 3 and 4)
-        for (let i = 3; i < Math.min(5, word.length); i++) {
-            if (colour3Letters.has(word[i].toUpperCase())) {
-                return true; // Keep word if any of positions 4 or 5 have a letter in the set
-            }
-        }
-        return false; // Remove word if neither position 4 nor 5 has a letter in the set
+        const pos4 = word.length > 3 ? word[3].toUpperCase() : null;
+        const pos5 = word.length > 4 ? word[4].toUpperCase() : null;
+        
+        console.log(`Word: ${word}, Position 4: ${pos4}, Position 5: ${pos5}`);
+        
+        // Check if either position 4 or 5 has a letter from our set
+        const hasColour3Letter = (pos4 && colour3Letters.has(pos4)) || (pos5 && colour3Letters.has(pos5));
+        
+        console.log(`Word ${word} ${hasColour3Letter ? 'KEEP' : 'REMOVE'}: Position 4 (${pos4}) ${pos4 && colour3Letters.has(pos4) ? 'matches' : 'does not match'}, Position 5 (${pos5}) ${pos5 && colour3Letters.has(pos5) ? 'matches' : 'does not match'}`);
+        
+        return hasColour3Letter;
     });
 }
 
