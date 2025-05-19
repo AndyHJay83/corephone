@@ -371,17 +371,11 @@ function handleVowelSelection(includeVowel) {
         document.getElementById('vowelFeature').classList.add('completed');
         // Update currentFilteredWords with the vowel-filtered results
         currentFilteredWords = [...currentFilteredWordsForVowels];
-        console.log('Vowel feature completed, moving to ORIGINAL LEX feature');
+        console.log('Vowel feature completed, moving to O? feature');
         
-        // Hide vowel feature and show ORIGINAL LEX feature
+        // Hide vowel feature and show O? feature
         document.getElementById('vowelFeature').style.display = 'none';
-        document.getElementById('originalLexFeature').style.display = 'block';
-        
-        // Find position with most variance and update display
-        const result = findPositionWithMostVariance(currentFilteredWords);
-        originalLexPosition = result.position;
-        document.getElementById('originalLexPosition').textContent = originalLexPosition + 1;
-        document.getElementById('originalLexLetters').textContent = result.letters.join(', ');
+        document.getElementById('oFeature').style.display = 'block';
     }
 }
 
