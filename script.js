@@ -1192,6 +1192,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // Position 1 DONE button
+    document.getElementById('position1DoneButton').addEventListener('click', () => {
+        console.log('Position 1 DONE button clicked');
+        // Mark Position 1 as completed
+        document.getElementById('position1Feature').classList.add('completed');
+        document.getElementById('position1Feature').style.display = 'none';
+        
+        // Move to VOWEL feature
+        console.log('Moving to VOWEL feature');
+        const vowelFeature = document.getElementById('vowelFeature');
+        vowelFeature.style.display = 'block';
+        
+        // Initialize vowel processing with current words
+        currentFilteredWordsForVowels = [...currentFilteredWords];
+        originalFilteredWords = [...currentFilteredWords];
+        currentVowelIndex = 0;
+        
+        // Get unique vowels from current word list
+        const vowels = new Set(['a', 'e', 'i', 'o', 'u']);
+        uniqueVowels = Array.from(new Set(
+            currentFilteredWords.join('').toLowerCase().split('')
+                .filter(char => vowels.has(char))
+        ));
+        
+        // Set up the vowel display
+        const vowelLetter = vowelFeature.querySelector('.vowel-letter');
+        if (uniqueVowels.length > 0) {
+            console.log('Setting first vowel letter to:', uniqueVowels[0].toUpperCase());
+            vowelLetter.textContent = uniqueVowels[0].toUpperCase();
+            vowelLetter.style.display = 'inline-block';
+        }
+    });
+
     // Vowel feature buttons
     document.querySelector('#vowelFeature .yes-btn').addEventListener('click', () => {
         console.log('Vowel YES button clicked');
