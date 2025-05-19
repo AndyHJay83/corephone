@@ -16,6 +16,8 @@ let hasO = null;
 let selectedCurvedLetter = null;
 let eeeCompleted = false;
 let lexiconCompleted = false;
+let originalLexCompleted = false;
+let originalLexPosition = -1;
 
 // Function to check if a word has any adjacent consonants
 function hasWordAdjacentConsonants(word) {
@@ -488,10 +490,75 @@ function filterWordsByLexicon(words, positions) {
     return filteredWords;
 }
 
+// Function to find position with most variance
+function findPositionWithMostVariance(words) {
+    console.log('Finding position with most variance in words:', words);
+    
+    // Initialize array to store unique letters for each position
+    const positionLetters = Array(5).fill().map(() => new Set());
+    
+    // Collect unique letters for each position
+    words.forEach(word => {
+        for (let i = 0; i < Math.min(5, word.length); i++) {
+            positionLetters[i].add(word[i].toUpperCase());
+        }
+    });
+    
+    // Find position with most unique letters
+    let maxVariance = -1;
+    let result = -1;
+    
+    positionLetters.forEach((letters, index) => {
+        console.log(`Position ${index + 1} has ${letters.size} unique letters:`, Array.from(letters));
+        if (letters.size > maxVariance) {
+            maxVariance = letters.size;
+            result = index;
+        }
+    });
+    
+    console.log('Selected position:', result + 1, 'with variance:', maxVariance);
+    return {
+        position: result,
+        letters: Array.from(positionLetters[result])
+    };
+}
+
+// Function to filter words by original lex
+function filterWordsByOriginalLex(words, position, letter) {
+    console.log('Filtering words by ORIGINAL LEX:', { position, letter });
+    console.log('Total words before filtering:', words.length);
+    
+    const filteredWords = words.filter(word => {
+        if (word.length <= position) {
+            console.log(`Word ${word} REMOVED: Too short for position ${position + 1}`);
+            return false;
+        }
+        
+        const wordLetter = word[position].toUpperCase();
+        const matches = wordLetter === letter.toUpperCase();
+        
+        if (matches) {
+            console.log(`Word ${word} KEPT: Position ${position + 1} has ${letter}`);
+        } else {
+            console.log(`Word ${word} REMOVED: Position ${position + 1} has ${wordLetter} instead of ${letter}`);
+        }
+        
+        return matches;
+    });
+    
+    console.log('Filtering Summary:');
+    console.log('Words before filtering:', words.length);
+    console.log('Words after filtering:', filteredWords.length);
+    console.log('Removed words:', words.length - filteredWords.length);
+    
+    return filteredWords;
+}
+
 // Function to show next feature
 function showNextFeature() {
     console.log('Showing next feature...');
     console.log('Current states:', {
+        originalLexCompleted,
         eeeCompleted,
         lexiconCompleted,
         hasAdjacentConsonants,
@@ -508,6 +575,7 @@ function showNextFeature() {
     
     // First hide all features
     const allFeatures = [
+        'originalLexFeature',
         'eeeFeature',
         'lexiconFeature',
         'consonantQuestion',
@@ -524,7 +592,22 @@ function showNextFeature() {
     });
     
     // Then show the appropriate feature based on the current state
-    if (!eeeCompleted) {
+    if (!originalLexCompleted) {
+        console.log('Showing ORIGINAL LEX feature');
+        const originalLexFeature = document.getElementById('originalLexFeature');
+        originalLexFeature.style.display = 'block';
+        
+        // Find position with most variance if not already found
+        if (originalLexPosition === -1) {
+            const result = findPositionWithMostVariance(currentFilteredWords);
+            originalLexPosition = result.position;
+            
+            // Update the display
+            document.getElementById('originalLexPosition').textContent = originalLexPosition + 1;
+            document.getElementById('originalLexLetters').textContent = result.letters.join(', ');
+        }
+    }
+    else if (!eeeCompleted) {
         console.log('Showing EEE? feature');
         document.getElementById('eeeFeature').style.display = 'block';
     }
@@ -771,8 +854,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('oFeature').classList.add('completed');
     document.getElementById('curvedFeature').classList.add('completed');
     
-    // Hide all features initially except EEE?
+    // Hide all features initially except ORIGINAL LEX
     const allFeatures = [
+        'eeeFeature',
         'lexiconFeature',
         'consonantQuestion',
         'position1Feature',
@@ -787,37 +871,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById(featureId).style.display = 'none';
     });
     
-    // Show EEE? feature first
-    document.getElementById('eeeFeature').style.display = 'block';
+    // Show ORIGINAL LEX feature first
+    document.getElementById('originalLexFeature').style.display = 'block';
     
-    // Reset lexicon state
+    // Reset states
+    originalLexCompleted = false;
+    eeeCompleted = false;
     lexiconCompleted = false;
+    originalLexPosition = -1;
     
-    // LEXICON feature
-    document.getElementById('lexiconButton').addEventListener('click', () => {
-        const input = document.getElementById('lexiconInput').value.trim();
+    // ORIGINAL LEX feature
+    document.getElementById('originalLexButton').addEventListener('click', () => {
+        const input = document.getElementById('originalLexInput').value.trim();
         if (input) {
-            console.log('LEXICON input:', input);
-            const filteredWords = filterWordsByLexicon(currentFilteredWords, input);
-            lexiconCompleted = true;
+            console.log('ORIGINAL LEX input:', input);
+            const firstLetter = input[0];
+            const filteredWords = filterWordsByOriginalLex(currentFilteredWords, originalLexPosition, firstLetter);
+            originalLexCompleted = true;
             displayResults(filteredWords);
-            // Hide LEXICON and show Consonants Together
-            document.getElementById('lexiconFeature').style.display = 'none';
-            document.getElementById('consonantQuestion').style.display = 'block';
+            // Hide ORIGINAL LEX and show EEE?
+            document.getElementById('originalLexFeature').style.display = 'none';
+            document.getElementById('eeeFeature').style.display = 'block';
         }
     });
     
-    document.getElementById('lexiconSkipButton').addEventListener('click', () => {
-        console.log('LEXICON SKIP selected');
-        lexiconCompleted = true;
-        // Hide LEXICON and show Consonants Together
-        document.getElementById('lexiconFeature').style.display = 'none';
-        document.getElementById('consonantQuestion').style.display = 'block';
+    document.getElementById('originalLexSkipButton').addEventListener('click', () => {
+        console.log('ORIGINAL LEX SKIP selected');
+        originalLexCompleted = true;
+        // Hide ORIGINAL LEX and show EEE?
+        document.getElementById('originalLexFeature').style.display = 'none';
+        document.getElementById('eeeFeature').style.display = 'block';
     });
     
-    document.getElementById('lexiconInput').addEventListener('keypress', (e) => {
+    document.getElementById('originalLexInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            document.getElementById('lexiconButton').click();
+            document.getElementById('originalLexButton').click();
         }
     });
     

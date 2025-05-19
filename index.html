@@ -19,44 +19,29 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header with toggles -->
         <div class="header">
-            <div class="toggles-container">
-                <div class="mode-toggle">
-                    <span class="mode-label">OLD</span>
-                    <label class="switch">
-                        <input type="checkbox" id="modeToggle" checked>
-                        <span class="slider round"></span>
-                    </label>
-                    <span class="mode-label">NEW</span>
-                </div>
-                <div class="feature-toggles">
-                    <div class="toggle-container">
-                        <label class="switch">
-                            <input type="checkbox" id="colour3Toggle" checked>
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="toggle-label">COLOUR3</span>
-                    </div>
-                    <div class="toggle-container">
-                        <label class="switch">
-                            <input type="checkbox" id="vowelToggle" checked>
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="toggle-label">VOWEL</span>
-                    </div>
-                    <div class="toggle-container">
-                        <label class="switch">
-                            <input type="checkbox" id="shapeToggle" checked>
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="toggle-label">SHAPE</span>
-                    </div>
-                </div>
+            <h1>Word Filter</h1>
+            <div class="controls">
+                <button id="resetButton">Reset</button>
+                <button id="settingsButton">Settings</button>
+                <button id="shareButton">Share</button>
             </div>
-            <button id="settingsButton" class="settings-button">
-                <i class="fas fa-cog"></i>
-            </button>
+        </div>
+        
+        <div class="word-count">Words: <span id="wordCount">0</span></div>
+        
+        <!-- ORIGINAL LEX Feature -->
+        <div id="originalLexFeature" class="feature">
+            <h2>ORIGINAL LEX</h2>
+            <div class="original-lex-display">
+                <div class="position-display">Position <span id="originalLexPosition">-</span></div>
+                <div class="letters-display">Letters: <span id="originalLexLetters">-</span></div>
+            </div>
+            <div class="input-group">
+                <input type="text" id="originalLexInput" placeholder="Enter a word...">
+                <button id="originalLexButton">DONE</button>
+                <button id="originalLexSkipButton">SKIP</button>
+            </div>
         </div>
 
         <!-- Word count header -->
