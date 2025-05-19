@@ -829,6 +829,24 @@ function filterWordsByColour3(words) {
     return filteredWords;
 }
 
+// Function to filter words by O? feature
+function filterWordsByO(words, includeO) {
+    console.log('Filtering words by O? mode:', includeO ? 'YES' : 'NO');
+    console.log('Total words before filtering:', words.length);
+    
+    const filteredWords = words.filter(word => {
+        const hasO = word.toLowerCase().includes('o');
+        return includeO ? hasO : !hasO;
+    });
+    
+    console.log('Filtering Summary:');
+    console.log('Words before filtering:', words.length);
+    console.log('Words after filtering:', filteredWords.length);
+    console.log('Removed words:', words.length - filteredWords.length);
+    
+    return filteredWords;
+}
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', async () => {
     await loadWordList();
@@ -1286,6 +1304,35 @@ document.addEventListener('DOMContentLoaded', async () => {
             modal.style.display = 'none';
         }
     };
+
+    // O? feature buttons
+    document.getElementById('oYesBtn').addEventListener('click', () => {
+        console.log('O? YES button clicked');
+        const filteredWords = filterWordsByO(currentFilteredWords, true);
+        document.getElementById('oFeature').classList.add('completed');
+        displayResults(filteredWords);
+        // Hide O? and show LEXICON
+        document.getElementById('oFeature').style.display = 'none';
+        document.getElementById('lexiconFeature').style.display = 'block';
+    });
+    
+    document.getElementById('oNoBtn').addEventListener('click', () => {
+        console.log('O? NO button clicked');
+        const filteredWords = filterWordsByO(currentFilteredWords, false);
+        document.getElementById('oFeature').classList.add('completed');
+        displayResults(filteredWords);
+        // Hide O? and show LEXICON
+        document.getElementById('oFeature').style.display = 'none';
+        document.getElementById('lexiconFeature').style.display = 'block';
+    });
+    
+    document.getElementById('oSkipBtn').addEventListener('click', () => {
+        console.log('O? SKIP selected');
+        document.getElementById('oFeature').classList.add('completed');
+        // Hide O? and show LEXICON
+        document.getElementById('oFeature').style.display = 'none';
+        document.getElementById('lexiconFeature').style.display = 'block';
+    });
 });
 
 // Function to check if a letter is curved
