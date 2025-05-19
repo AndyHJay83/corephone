@@ -30,28 +30,6 @@
         
         <div class="word-count">Words: <span id="wordCount">0</span></div>
         
-        <!-- ORIGINAL LEX Feature -->
-        <div id="originalLexFeature" class="feature">
-            <h2>ORIGINAL LEX</h2>
-            <div class="original-lex-display">
-                <div class="position-display">Position <span id="originalLexPosition">-</span></div>
-                <div class="letters-display">Letters: <span id="originalLexLetters">-</span></div>
-            </div>
-            <div class="input-group">
-                <input type="text" id="originalLexInput" placeholder="Enter a word...">
-                <button id="originalLexButton">DONE</button>
-                <button id="originalLexSkipButton">SKIP</button>
-            </div>
-        </div>
-
-        <!-- Word count header -->
-        <div class="word-count-header">
-            <div class="word-count" id="wordCount">0</div>
-            <button id="shareButton" class="share-button">
-                <i class="fas fa-share-alt"></i> Export List
-            </button>
-        </div>
-
         <!-- Main content area -->
         <div class="main-content">
             <!-- Word list container -->
@@ -61,6 +39,20 @@
 
             <!-- Feature area -->
             <div class="feature-area" id="featureArea">
+                <!-- ORIGINAL LEX Feature -->
+                <div id="originalLexFeature" class="feature-section" style="display: none;">
+                    <div class="feature-title">ORIGINAL LEX</div>
+                    <div class="original-lex-display">
+                        <div class="position-display">Position <span id="originalLexPosition">-</span></div>
+                        <div class="letters-display">Letters: <span id="originalLexLetters">-</span></div>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="originalLexInput" placeholder="Enter a word...">
+                        <button id="originalLexButton">DONE</button>
+                        <button id="originalLexSkipButton" class="skip-button">SKIP</button>
+                    </div>
+                </div>
+
                 <!-- EEE? feature -->
                 <div id="eeeFeature" class="feature-section" style="display: none;">
                     <div class="feature-title">EEE?</div>
