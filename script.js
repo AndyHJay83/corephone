@@ -1036,16 +1036,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         const vowels = new Set(['a', 'e', 'i', 'o', 'u']);
         const filteredWords = currentFilteredWords.filter(word => {
             const wordLower = word.toLowerCase();
+            let hasAdjacent = false;
+            
             for (let i = 0; i < wordLower.length - 1; i++) {
                 const currentChar = wordLower[i];
                 const nextChar = wordLower[i + 1];
                 if (!vowels.has(currentChar) && !vowels.has(nextChar)) {
-                    console.log(`Removing word "${word}" - has adjacent consonants "${currentChar}${nextChar}"`);
-                    return false;
+                    hasAdjacent = true;
+                    break;
                 }
             }
-            console.log(`Keeping word "${word}" - no adjacent consonants`);
-            return true;
+            
+            if (!hasAdjacent) {
+                console.log(`Keeping word "${word}" - no adjacent consonants`);
+                return true;
+            } else {
+                console.log(`Removing word "${word}" - has adjacent consonants`);
+                return false;
+            }
         });
         
         console.log('Before filtering:', currentFilteredWords.length, 'words');
