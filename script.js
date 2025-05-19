@@ -839,8 +839,7 @@ function filterWordsByColour3(words) {
 document.addEventListener('DOMContentLoaded', async () => {
     await loadWordList();
     
-    // Mark O? and CURVED features as completed by default
-    document.getElementById('oFeature').classList.add('completed');
+    // Mark CURVED feature as completed by default
     document.getElementById('curvedFeature').classList.add('completed');
     
     // Hide all features initially except Consonants Together
