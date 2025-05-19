@@ -1070,6 +1070,128 @@ document.addEventListener('DOMContentLoaded', async () => {
         showNextFeature();
     });
 
+    // Position 1 feature
+    document.getElementById('position1Button').addEventListener('click', () => {
+        const input = document.getElementById('position1Input').value.trim();
+        if (input) {
+            const consonants = getConsonantsInOrder(input);
+            console.log('Processing Position 1 input:', input);
+            console.log('Found consonants:', consonants);
+            
+            if (consonants.length >= 2) {
+                let filteredWords;
+                
+                if (hasAdjacentConsonants) {
+                    // YES to Consonants Together: look for the specific consonant pairs together
+                    filteredWords = currentFilteredWords.filter(word => {
+                        const wordLower = word.toLowerCase();
+                        
+                        // Create all possible pairs of consonants from the input word
+                        const consonantPairs = [];
+                        for (let i = 0; i < consonants.length; i++) {
+                            for (let j = i + 1; j < consonants.length; j++) {
+                                consonantPairs.push([consonants[i], consonants[j]]);
+                            }
+                        }
+                        
+                        console.log(`Checking word "${wordLower}" for consonant pairs:`, consonantPairs);
+                        
+                        // Check if any of the consonant pairs appear together in the word
+                        for (const [con1, con2] of consonantPairs) {
+                            const pair1 = con1 + con2;
+                            const pair2 = con2 + con1;
+                            if (wordLower.includes(pair1) || wordLower.includes(pair2)) {
+                                console.log(`Word "${wordLower}" accepted: found consonant pair "${pair1}" or "${pair2}"`);
+                                return true;
+                            }
+                        }
+                        
+                        console.log(`Word "${wordLower}" rejected: no matching consonant pairs found`);
+                        return false;
+                    });
+                } else {
+                    // NO to Consonants Together: look for ANY pair of consonants in middle 5/6 characters
+                    filteredWords = currentFilteredWords.filter(word => {
+                        const wordLower = word.toLowerCase();
+                        const wordLength = wordLower.length;
+                        
+                        // Determine middle section length (5 for odd, 6 for even)
+                        const middleLength = wordLength % 2 === 0 ? 6 : 5;
+                        const startPos = Math.floor((wordLength - middleLength) / 2);
+                        const middleSection = wordLower.slice(startPos, startPos + middleLength);
+                        
+                        console.log(`Word "${wordLower}": middle section "${middleSection}"`);
+                        
+                        // Create all possible pairs of consonants from the input word
+                        const consonantPairs = [];
+                        for (let i = 0; i < consonants.length; i++) {
+                            for (let j = i + 1; j < consonants.length; j++) {
+                                consonantPairs.push([consonants[i], consonants[j]]);
+                            }
+                        }
+                        
+                        // Check if ANY pair of consonants appears in the middle section
+                        for (const [con1, con2] of consonantPairs) {
+                            if (middleSection.includes(con1) && middleSection.includes(con2)) {
+                                console.log(`Word "${wordLower}" accepted: found consonants "${con1}" and "${con2}" in middle section`);
+                                return true;
+                            }
+                        }
+                        
+                        console.log(`Word "${wordLower}" rejected: no consonant pairs found in middle section`);
+                        return false;
+                    });
+                }
+                
+                console.log('Filtered words count:', filteredWords.length);
+                
+                // Update the current filtered words
+                currentFilteredWords = filteredWords;
+                
+                // Mark Position 1 as completed and update the display
+                document.getElementById('position1Feature').classList.add('completed');
+                document.getElementById('position1Feature').style.display = 'none';
+                displayResults(filteredWords);
+                
+                // Get vowels from the input word in left-to-right order
+                const vowels = new Set(['a', 'e', 'i', 'o', 'u']);
+                const inputLower = input.toLowerCase();
+                uniqueVowels = [];
+                
+                // Collect vowels in order of appearance
+                for (let i = 0; i < inputLower.length; i++) {
+                    const char = inputLower[i];
+                    if (vowels.has(char)) {
+                        uniqueVowels.push(char);
+                    }
+                }
+                
+                console.log('Input word:', input);
+                console.log('Vowels collected in order:', uniqueVowels);
+                
+                // Initialize vowel processing with the filtered words
+                currentFilteredWordsForVowels = [...filteredWords];
+                originalFilteredWords = [...filteredWords];
+                currentVowelIndex = 0;
+                
+                // Move to VOWEL feature
+                console.log('Moving to VOWEL feature');
+                const vowelFeature = document.getElementById('vowelFeature');
+                vowelFeature.style.display = 'block';
+                
+                // Set up the vowel display
+                const vowelLetter = vowelFeature.querySelector('.vowel-letter');
+                if (uniqueVowels.length > 0) {
+                    console.log('Setting first vowel letter to:', uniqueVowels[0].toUpperCase());
+                    vowelLetter.textContent = uniqueVowels[0].toUpperCase();
+                    vowelLetter.style.display = 'inline-block';
+                }
+            } else {
+                console.log('Not enough consonants found in input');
+            }
+        }
+    });
+
     // Vowel feature buttons
     document.querySelector('#vowelFeature .yes-btn').addEventListener('click', () => {
         console.log('Vowel YES button clicked');
@@ -1080,7 +1202,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('Vowel NO button clicked');
         handleVowelSelection(false);
     });
-    
+
+    // LEXICON feature
+    document.getElementById('lexiconButton').addEventListener('click', () => {
+        const input = document.getElementById('lexiconInput').value.trim();
+        if (input) {
+            console.log('LEXICON input:', input);
+            const filteredWords = filterWordsByLexicon(currentFilteredWords, input);
+            lexiconCompleted = true;
+            displayResults(filteredWords);
+            // Hide LEXICON and show next feature
+            document.getElementById('lexiconFeature').style.display = 'none';
+            showNextFeature();
+        }
+    });
+
+    document.getElementById('lexiconSkipButton').addEventListener('click', () => {
+        console.log('LEXICON SKIP selected');
+        lexiconCompleted = true;
+        // Hide LEXICON and show next feature
+        document.getElementById('lexiconFeature').style.display = 'none';
+        showNextFeature();
+    });
+
+    // Enter key handlers
+    document.getElementById('position1Input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            document.getElementById('position1Button').click();
+        }
+    });
+
+    document.getElementById('lexiconInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            document.getElementById('lexiconButton').click();
+        }
+    });
+
     // Reset button - full page refresh
     document.getElementById('resetButton').addEventListener('click', () => {
         window.location.reload();
@@ -1103,110 +1260,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             modal.style.display = 'none';
         }
     };
-    
-    document.getElementById('position1Input').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            document.getElementById('position1Button').click();
-        }
-    });
-
-    // O? feature buttons
-    document.getElementById('oYesBtn').addEventListener('click', () => {
-        console.log('O? YES selected');
-        hasO = true;
-        
-        // Filter to keep ONLY words that have 'O'
-        const filteredWords = currentFilteredWords.filter(word => {
-            const hasLetterO = word.toLowerCase().includes('o');
-            if (hasLetterO) {
-                console.log(`Keeping word "${word}" - has O`);
-            } else {
-                console.log(`Removing word "${word}" - no O`);
-            }
-            return hasLetterO;
-        });
-        
-        console.log('Before filtering:', currentFilteredWords.length, 'words');
-        currentFilteredWords = filteredWords;
-        console.log('After filtering (keeping only words with O):', currentFilteredWords.length, 'words');
-        
-        // Update the display immediately
-        displayResults(currentFilteredWords);
-        document.getElementById('oFeature').classList.add('completed');
-        showNextFeature();
-    });
-
-    document.getElementById('oNoBtn').addEventListener('click', () => {
-        console.log('O? NO selected');
-        hasO = false;
-        
-        // Filter to keep ONLY words that do NOT have 'O'
-        const filteredWords = currentFilteredWords.filter(word => {
-            const hasLetterO = word.toLowerCase().includes('o');
-            if (!hasLetterO) {
-                console.log(`Keeping word "${word}" - no O`);
-            } else {
-                console.log(`Removing word "${word}" - has O`);
-            }
-            return !hasLetterO;
-        });
-        
-        console.log('Before filtering:', currentFilteredWords.length, 'words');
-        currentFilteredWords = filteredWords;
-        console.log('After filtering (keeping only words without O):', currentFilteredWords.length, 'words');
-        
-        // Update the display immediately
-        displayResults(currentFilteredWords);
-        document.getElementById('oFeature').classList.add('completed');
-        showNextFeature();
-    });
-
-    document.getElementById('oSkipBtn').addEventListener('click', () => {
-        console.log('O? SKIP selected');
-        document.getElementById('oFeature').classList.add('completed');
-        showNextFeature();
-    });
-
-    // CURVED feature buttons
-    document.querySelectorAll('.curved-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const letter = button.textContent;
-            console.log('Curved letter selected:', letter);
-            selectedCurvedLetter = letter;
-            
-            // Filter to keep ONLY words that have the selected letter
-            const filteredWords = currentFilteredWords.filter(word => {
-                const hasLetter = word.toLowerCase().includes(letter.toLowerCase());
-                if (hasLetter) {
-                    console.log(`Keeping word "${word}" - has ${letter}`);
-                } else {
-                    console.log(`Removing word "${word}" - no ${letter}`);
-                }
-                return hasLetter;
-            });
-            
-            console.log('Before filtering:', currentFilteredWords.length, 'words');
-            currentFilteredWords = filteredWords;
-            console.log('After filtering (keeping only words with ' + letter + '):', currentFilteredWords.length, 'words');
-            
-            // Update the display immediately
-            displayResults(currentFilteredWords);
-            document.getElementById('curvedFeature').classList.add('completed');
-            document.getElementById('curvedFeature').style.display = 'none';
-            
-            // Show consonant question
-            document.getElementById('consonantQuestion').style.display = 'block';
-        });
-    });
-
-    document.getElementById('curvedSkipBtn').addEventListener('click', () => {
-        console.log('CURVED SKIP selected');
-        document.getElementById('curvedFeature').classList.add('completed');
-        document.getElementById('curvedFeature').style.display = 'none';
-        
-        // Show consonant question
-        document.getElementById('consonantQuestion').style.display = 'block';
-    });
 });
 
 // Function to check if a letter is curved
