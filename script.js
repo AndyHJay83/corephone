@@ -507,19 +507,22 @@ function findPositionWithMostVariance(words) {
     // Find position with most unique letters
     let maxVariance = -1;
     let result = -1;
+    let resultLetters = [];
     
     positionLetters.forEach((letters, index) => {
-        console.log(`Position ${index + 1} has ${letters.size} unique letters:`, Array.from(letters));
+        const uniqueLetters = Array.from(letters).sort();
+        console.log(`Position ${index + 1} has ${letters.size} unique letters:`, uniqueLetters);
         if (letters.size > maxVariance) {
             maxVariance = letters.size;
             result = index;
+            resultLetters = uniqueLetters;
         }
     });
     
-    console.log('Selected position:', result + 1, 'with variance:', maxVariance);
+    console.log('Selected position:', result + 1, 'with variance:', maxVariance, 'letters:', resultLetters);
     return {
         position: result,
-        letters: Array.from(positionLetters[result])
+        letters: resultLetters
     };
 }
 
@@ -880,15 +883,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     lexiconCompleted = false;
     originalLexPosition = -1;
     
+    // Find position with most variance and update display
+    const result = findPositionWithMostVariance(currentFilteredWords);
+    originalLexPosition = result.position;
+    document.getElementById('originalLexPosition').textContent = originalLexPosition + 1;
+    document.getElementById('originalLexLetters').textContent = result.letters.join(', ');
+    
     // ORIGINAL LEX feature
     document.getElementById('originalLexButton').addEventListener('click', () => {
         const input = document.getElementById('originalLexInput').value.trim();
         if (input) {
             console.log('ORIGINAL LEX input:', input);
-            const firstLetter = input[0];
+            const firstLetter = input[0].toUpperCase();
+            console.log('Using first letter:', firstLetter, 'for position:', originalLexPosition + 1);
+            
             const filteredWords = filterWordsByOriginalLex(currentFilteredWords, originalLexPosition, firstLetter);
             originalLexCompleted = true;
             displayResults(filteredWords);
+            
             // Hide ORIGINAL LEX and show EEE?
             document.getElementById('originalLexFeature').style.display = 'none';
             document.getElementById('eeeFeature').style.display = 'block';
