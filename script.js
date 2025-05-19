@@ -365,16 +365,23 @@ function handleVowelSelection(includeVowel) {
         const vowelLetter = vowelFeature.querySelector('.vowel-letter');
         console.log('Setting next vowel letter to:', uniqueVowels[0].toUpperCase());
         vowelLetter.textContent = uniqueVowels[0].toUpperCase();
+        vowelLetter.style.display = 'inline-block';
     } else {
         // No more vowels to process, mark as completed and move to next feature
         document.getElementById('vowelFeature').classList.add('completed');
         // Update currentFilteredWords with the vowel-filtered results
         currentFilteredWords = [...currentFilteredWordsForVowels];
-        console.log('Vowel feature completed, moving to LEXICON feature');
+        console.log('Vowel feature completed, moving to ORIGINAL LEX feature');
         
-        // Hide vowel feature and show LEXICON feature
+        // Hide vowel feature and show ORIGINAL LEX feature
         document.getElementById('vowelFeature').style.display = 'none';
-        document.getElementById('lexiconFeature').style.display = 'block';
+        document.getElementById('originalLexFeature').style.display = 'block';
+        
+        // Find position with most variance and update display
+        const result = findPositionWithMostVariance(currentFilteredWords);
+        originalLexPosition = result.position;
+        document.getElementById('originalLexPosition').textContent = originalLexPosition + 1;
+        document.getElementById('originalLexLetters').textContent = result.letters.join(', ');
     }
 }
 
@@ -1158,20 +1165,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 currentVowelIndex = 0;
                 
                 // Move to VOWEL feature
-                if (isVowelMode) {
-                    console.log('Moving to VOWEL feature');
-                    const vowelFeature = document.getElementById('vowelFeature');
-                    vowelFeature.style.display = 'block';
-                    
-                    // Set up the vowel display
-                    const vowelLetter = vowelFeature.querySelector('.vowel-letter');
-                    if (uniqueVowels.length > 0) {
-                        console.log('Setting first vowel letter to:', uniqueVowels[0].toUpperCase());
-                        vowelLetter.textContent = uniqueVowels[0].toUpperCase();
-                        vowelLetter.style.display = 'inline-block';
-                    }
-                } else {
-                    showNextFeature();
+                console.log('Moving to VOWEL feature');
+                const vowelFeature = document.getElementById('vowelFeature');
+                vowelFeature.style.display = 'block';
+                
+                // Set up the vowel display
+                const vowelLetter = vowelFeature.querySelector('.vowel-letter');
+                if (uniqueVowels.length > 0) {
+                    console.log('Setting first vowel letter to:', uniqueVowels[0].toUpperCase());
+                    vowelLetter.textContent = uniqueVowels[0].toUpperCase();
+                    vowelLetter.style.display = 'inline-block';
                 }
             } else {
                 console.log('Not enough consonants found in input');
@@ -1382,4 +1385,4 @@ function filterWordsByCurvedPositions(words, positions) {
         
         return true;
     });
-} 
+}
