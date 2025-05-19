@@ -595,30 +595,7 @@ function showNextFeature() {
     });
     
     // Then show the appropriate feature based on the current state
-    if (!originalLexCompleted) {
-        console.log('Showing ORIGINAL LEX feature');
-        const originalLexFeature = document.getElementById('originalLexFeature');
-        originalLexFeature.style.display = 'block';
-        
-        // Find position with most variance if not already found
-        if (originalLexPosition === -1) {
-            const result = findPositionWithMostVariance(currentFilteredWords);
-            originalLexPosition = result.position;
-            
-            // Update the display
-            document.getElementById('originalLexPosition').textContent = originalLexPosition + 1;
-            document.getElementById('originalLexLetters').textContent = result.letters.join(', ');
-        }
-    }
-    else if (!eeeCompleted) {
-        console.log('Showing EEE? feature');
-        document.getElementById('eeeFeature').style.display = 'block';
-    }
-    else if (!lexiconCompleted) {
-        console.log('Showing LEXICON feature');
-        document.getElementById('lexiconFeature').style.display = 'block';
-    }
-    else if (hasAdjacentConsonants === null) {
+    if (hasAdjacentConsonants === null) {
         console.log('Showing consonant question');
         const consonantQuestion = document.getElementById('consonantQuestion');
         console.log('consonantQuestion element:', consonantQuestion);
@@ -662,6 +639,29 @@ function showNextFeature() {
             console.log('No vowels found in current word list');
             vowelLetter.style.display = 'none';
         }
+    }
+    else if (!originalLexCompleted) {
+        console.log('Showing ORIGINAL LEX feature');
+        const originalLexFeature = document.getElementById('originalLexFeature');
+        originalLexFeature.style.display = 'block';
+        
+        // Find position with most variance if not already found
+        if (originalLexPosition === -1) {
+            const result = findPositionWithMostVariance(currentFilteredWords);
+            originalLexPosition = result.position;
+            
+            // Update the display
+            document.getElementById('originalLexPosition').textContent = originalLexPosition + 1;
+            document.getElementById('originalLexLetters').textContent = result.letters.join(', ');
+        }
+    }
+    else if (!eeeCompleted) {
+        console.log('Showing EEE? feature');
+        document.getElementById('eeeFeature').style.display = 'block';
+    }
+    else if (!lexiconCompleted) {
+        console.log('Showing LEXICON feature');
+        document.getElementById('lexiconFeature').style.display = 'block';
     }
     else if (isColour3Mode && !document.getElementById('colour3Feature').classList.contains('completed')) {
         console.log('Showing COLOUR3 feature');
@@ -857,11 +857,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('oFeature').classList.add('completed');
     document.getElementById('curvedFeature').classList.add('completed');
     
-    // Hide all features initially except ORIGINAL LEX
+    // Hide all features initially except Consonants Together
     const allFeatures = [
+        'originalLexFeature',
         'eeeFeature',
         'lexiconFeature',
-        'consonantQuestion',
         'position1Feature',
         'vowelFeature',
         'colour3Feature',
@@ -874,14 +874,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById(featureId).style.display = 'none';
     });
     
-    // Show ORIGINAL LEX feature first
-    document.getElementById('originalLexFeature').style.display = 'block';
+    // Show Consonants Together first
+    document.getElementById('consonantQuestion').style.display = 'block';
     
     // Reset states
     originalLexCompleted = false;
     eeeCompleted = false;
     lexiconCompleted = false;
     originalLexPosition = -1;
+    hasAdjacentConsonants = null;
     
     // Find position with most variance and update display
     const result = findPositionWithMostVariance(currentFilteredWords);
