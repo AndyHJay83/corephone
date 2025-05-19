@@ -751,12 +751,6 @@ function resetApp() {
         }
     });
     
-    // Reset all toggles to their default state
-    document.getElementById('modeToggle').checked = true;
-    document.getElementById('colour3Toggle').checked = true;
-    document.getElementById('vowelToggle').checked = true;
-    document.getElementById('shapeToggle').checked = true;
-    
     // Reset all input fields
     document.getElementById('position1Input').value = '';
     
@@ -769,31 +763,16 @@ function resetApp() {
 
 // Function to toggle mode
 function toggleMode() {
-    isNewMode = document.getElementById('modeToggle').checked;
+    isNewMode = true; // Default to new mode
     resetApp();
 }
 
 // Function to toggle feature
 function toggleFeature(featureId) {
-    const toggle = document.getElementById(featureId.replace('Feature', 'Toggle'));
-    const isEnabled = toggle.checked;
-    
-    switch(featureId) {
-        case 'colour3Feature':
-            isColour3Mode = isEnabled;
-            break;
-        case 'vowelFeature':
-            isVowelMode = isEnabled;
-            break;
-        case 'shapeFeature':
-            isShapeMode = isEnabled;
-            break;
-    }
-    
-    // If the feature is disabled, mark it as completed
-    if (!isEnabled) {
-        document.getElementById(featureId).classList.add('completed');
-    }
+    // Default all features to enabled
+    isColour3Mode = true;
+    isVowelMode = true;
+    isShapeMode = true;
     
     // Update the display
     showNextFeature();
@@ -1043,14 +1022,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('eeeFeature').style.display = 'none';
         document.getElementById('lexiconFeature').style.display = 'block';
     });
-    
-    // Mode toggle listener
-    document.getElementById('modeToggle').addEventListener('change', toggleMode);
-    
-    // Feature toggle listeners
-    document.getElementById('colour3Toggle').addEventListener('change', () => toggleFeature('colour3Feature'));
-    document.getElementById('vowelToggle').addEventListener('change', () => toggleFeature('vowelFeature'));
-    document.getElementById('shapeToggle').addEventListener('change', () => toggleFeature('shapeFeature'));
     
     // Share button listener
     document.getElementById('shareButton').addEventListener('click', exportWordlist);
