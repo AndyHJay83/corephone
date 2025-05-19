@@ -647,6 +647,14 @@ function showNextFeature() {
             vowelLetter.style.display = 'none';
         }
     }
+    else if (!document.getElementById('oFeature').classList.contains('completed')) {
+        console.log('Showing O? feature');
+        document.getElementById('oFeature').style.display = 'block';
+    }
+    else if (!lexiconCompleted) {
+        console.log('Showing LEXICON feature');
+        document.getElementById('lexiconFeature').style.display = 'block';
+    }
     else if (!originalLexCompleted) {
         console.log('Showing ORIGINAL LEX feature');
         const originalLexFeature = document.getElementById('originalLexFeature');
@@ -666,10 +674,6 @@ function showNextFeature() {
         console.log('Showing EEE? feature');
         document.getElementById('eeeFeature').style.display = 'block';
     }
-    else if (!lexiconCompleted) {
-        console.log('Showing LEXICON feature');
-        document.getElementById('lexiconFeature').style.display = 'block';
-    }
     else if (isColour3Mode && !document.getElementById('colour3Feature').classList.contains('completed')) {
         console.log('Showing COLOUR3 feature');
         const colour3Feature = document.getElementById('colour3Feature');
@@ -679,10 +683,6 @@ function showNextFeature() {
         console.log('Showing SHAPE feature');
         document.getElementById('shapeFeature').style.display = 'block';
         updateShapeDisplay(currentFilteredWords);
-    }
-    else if (!document.getElementById('oFeature').classList.contains('completed')) {
-        console.log('Showing O? feature');
-        document.getElementById('oFeature').style.display = 'block';
     }
     else if (!document.getElementById('curvedFeature').classList.contains('completed')) {
         console.log('Showing CURVED feature');
