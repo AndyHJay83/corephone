@@ -1007,7 +1007,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Hide ORIGINAL LEX and show EEE?
             document.getElementById('originalLexFeature').style.display = 'none';
             document.getElementById('eeeFeature').style.display = 'block';
-        }
+        });
     });
     
     document.getElementById('originalLexSkipButton').addEventListener('click', () => {
@@ -1485,11 +1485,11 @@ function getWordCategory(word) {
 
 // Function to check if words are in the same family
 function areWordsInSameFamily(word1, word2) {
-    // Get the first 8 characters of each word
-    const prefix1 = word1.slice(0, 8).toLowerCase();
-    const prefix2 = word2.slice(0, 8).toLowerCase();
+    // Get the first 5 characters of each word
+    const prefix1 = word1.slice(0, 5).toLowerCase();
+    const prefix2 = word2.slice(0, 5).toLowerCase();
     
-    // Words must share the first 8 characters exactly
+    // Words must share the first 5 characters exactly
     if (prefix1 !== prefix2) {
         return false;
     }
