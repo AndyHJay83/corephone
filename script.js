@@ -1422,39 +1422,103 @@ function filterWordsByCurvedPositions(words, positions) {
     });
 }
 
+// Function to check if words are in the same family
+function areWordsInSameFamily(word1, word2) {
+    // Get the shorter word length
+    const shorterLength = Math.min(word1.length, word2.length);
+    
+    // If the length difference is too large, they're probably not in the same family
+    if (Math.abs(word1.length - word2.length) > 4) {
+        return false;
+    }
+    
+    // Check if the shorter word is a complete prefix of the longer word
+    const shorterWord = word1.length <= word2.length ? word1 : word2;
+    const longerWord = word1.length > word2.length ? word1 : word2;
+    
+    // If the shorter word is a complete prefix, they're in the same family
+    if (longerWord.startsWith(shorterWord)) {
+        return true;
+    }
+    
+    // Check first 8 characters for similarity
+    const prefix1 = word1.slice(0, 8).toLowerCase();
+    const prefix2 = word2.slice(0, 8).toLowerCase();
+    
+    // If prefixes match exactly, they're likely in the same family
+    if (prefix1 === prefix2) {
+        return true;
+    }
+    
+    // Calculate similarity score for the first 8 characters
+    let matchingChars = 0;
+    for (let i = 0; i < 8; i++) {
+        if (prefix1[i] === prefix2[i]) {
+            matchingChars++;
+        }
+    }
+    
+    // If more than 6 characters match in the first 8, they're likely in the same family
+    return matchingChars >= 6;
+}
+
 // Function to group similar words
 function groupSimilarWords(words) {
-    const groups = {};
-    const representativeWords = new Map(); // Maps representative word to its group
+    const groups = new Map(); // Maps representative word to its group
+    const processedWords = new Set();
     
-    // Group words by first 6 letters
-    words.forEach(word => {
-        const prefix = word.slice(0, 6).toLowerCase();
-        if (!groups[prefix]) {
-            groups[prefix] = [];
+    // Sort words by length (shorter first) and then alphabetically
+    const sortedWords = [...words].sort((a, b) => {
+        if (a.length === b.length) {
+            return a.localeCompare(b);
         }
-        groups[prefix].push(word);
+        return a.length - b.length;
     });
     
-    // Find representative words and create the mapping
-    Object.entries(groups).forEach(([prefix, wordGroup]) => {
-        if (wordGroup.length > 1) {
-            // Sort by length (shorter first) and then alphabetically
-            wordGroup.sort((a, b) => {
+    // First pass: identify word families
+    for (let i = 0; i < sortedWords.length; i++) {
+        const word = sortedWords[i];
+        
+        // Skip if already processed
+        if (processedWords.has(word)) continue;
+        
+        // Start a new group with this word
+        const group = [word];
+        processedWords.add(word);
+        
+        // Look for related words
+        for (let j = i + 1; j < sortedWords.length; j++) {
+            const otherWord = sortedWords[j];
+            
+            // Skip if already processed
+            if (processedWords.has(otherWord)) continue;
+            
+            // Check if words are in the same family
+            if (areWordsInSameFamily(word, otherWord)) {
+                group.push(otherWord);
+                processedWords.add(otherWord);
+            }
+        }
+        
+        // Only create a group if we found related words
+        if (group.length > 1) {
+            // Sort the group by length and then alphabetically
+            group.sort((a, b) => {
                 if (a.length === b.length) {
                     return a.localeCompare(b);
                 }
                 return a.length - b.length;
             });
             
-            const representative = wordGroup[0];
-            representativeWords.set(representative, wordGroup);
+            // Use the shortest word as the representative
+            const representative = group[0];
+            groups.set(representative, group);
         }
-    });
+    }
     
     return {
-        representativeWords,
-        displayWords: Array.from(representativeWords.keys())
+        representativeWords: groups,
+        displayWords: Array.from(groups.keys())
     };
 }
 
