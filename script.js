@@ -1586,7 +1586,44 @@ function areWordsInSameFamily(word1, word2) {
     const category1 = getWordCategory(word1);
     const category2 = getWordCategory(word2);
     
-    // Words must be in the same category
+    // If either word is in a specific category (fruit, bird, etc.), they must match exactly
+    const specificCategories = ['fruit', 'bird', 'animal', 'plant', 'music', 'material'];
+    if (specificCategories.includes(category1) || specificCategories.includes(category2)) {
+        return category1 === category2;
+    }
+    
+    // For compound words, check if they share the same base word
+    const baseWords = {
+        'apple': ['pie', 'mac', 'sauce', 'juice', 'cider'],
+        'black': ['berry', 'bird', 'board', 'smith', 'mail'],
+        'blue': ['berry', 'bird', 'print', 'jeans'],
+        'red': ['berry', 'bird', 'wood', 'wine'],
+        'white': ['board', 'wash', 'wine', 'fish'],
+        'green': ['house', 'wood', 'tea', 'bean'],
+        'yellow': ['stone', 'wood', 'cake'],
+        'brown': ['stone', 'sugar', 'rice'],
+        'gray': ['stone', 'matter', 'area'],
+        'pink': ['slip', 'eye', 'lady'],
+        'purple': ['heart', 'haze', 'rain'],
+        'orange': ['juice', 'peel', 'tree'],
+        'gold': ['fish', 'mine', 'rush'],
+        'silver': ['fish', 'mine', 'ware'],
+        'bronze': ['age', 'medal', 'statue']
+    };
+    
+    // Check if both words are compound words with the same base
+    for (const [base, suffixes] of Object.entries(baseWords)) {
+        if (word1.toLowerCase().startsWith(base) && word2.toLowerCase().startsWith(base)) {
+            // Check if both words end with one of the known suffixes
+            const suffix1 = word1.toLowerCase().slice(base.length);
+            const suffix2 = word2.toLowerCase().slice(base.length);
+            if (suffixes.includes(suffix1) && suffixes.includes(suffix2)) {
+                return true;
+            }
+        }
+    }
+    
+    // If no specific category match and no compound word match, use the original category check
     return category1 !== null && category1 === category2;
 }
 
