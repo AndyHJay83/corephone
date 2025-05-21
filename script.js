@@ -1422,44 +1422,84 @@ function filterWordsByCurvedPositions(words, positions) {
     });
 }
 
-// Function to check if words are in the same family
-function areWordsInSameFamily(word1, word2) {
-    // Get the shorter word length
-    const shorterLength = Math.min(word1.length, word2.length);
+// Word categories mapping
+const wordCategories = {
+    // Food and drink
+    food: new Set(['PIZZA', 'PASTA', 'BURGER', 'SANDWICH', 'SALAD', 'SOUP', 'STEW', 'CAKE', 'BREAD', 'COFFEE', 'TEA', 'WINE', 'BEER']),
+    // Elements and chemistry
+    element: new Set(['CARBON', 'OXYGEN', 'NITROGEN', 'HYDROGEN', 'SILVER', 'GOLD', 'IRON', 'COPPER']),
+    // Transportation
+    transport: new Set(['CARRIAGE', 'TRAIN', 'PLANE', 'BOAT', 'SHIP', 'TRUCK', 'BUS', 'TAXI']),
+    // Buildings and structures
+    building: new Set(['HOUSE', 'BUILDING', 'TOWER', 'BRIDGE', 'TUNNEL', 'GATE', 'WALL']),
+    // Nature and environment
+    nature: new Set(['RIVER', 'MOUNTAIN', 'FOREST', 'OCEAN', 'LAKE', 'STREAM', 'VALLEY']),
+    // Animals
+    animal: new Set(['LION', 'TIGER', 'ELEPHANT', 'GIRAFFE', 'MONKEY', 'DOLPHIN', 'WHALE']),
+    // Plants
+    plant: new Set(['TREE', 'FLOWER', 'GRASS', 'BUSH', 'VINE', 'LEAF', 'ROSE', 'LILY']),
+    // Weather
+    weather: new Set(['RAIN', 'STORM', 'CLOUD', 'WIND', 'SUN', 'SNOW', 'FROST', 'THUNDER']),
+    // Time
+    time: new Set(['YEAR', 'MONTH', 'WEEK', 'DAY', 'HOUR', 'MINUTE', 'SECOND']),
+    // Body parts
+    body: new Set(['HEAD', 'HAND', 'FOOT', 'ARM', 'LEG', 'EYE', 'EAR', 'NOSE', 'MOUTH']),
+    // Clothing
+    clothing: new Set(['SHIRT', 'PANTS', 'DRESS', 'SKIRT', 'JACKET', 'COAT', 'HAT', 'SHOES']),
+    // Tools
+    tool: new Set(['HAMMER', 'SCREWDRIVER', 'WRENCH', 'PLIERS', 'DRILL', 'SAW', 'AXE']),
+    // Furniture
+    furniture: new Set(['TABLE', 'CHAIR', 'SOFA', 'BED', 'DESK', 'SHELF', 'CABINET']),
+    // Technology
+    technology: new Set(['COMPUTER', 'PHONE', 'CAMERA', 'RADIO', 'TELEVISION', 'LAPTOP']),
+    // Music
+    music: new Set(['PIANO', 'GUITAR', 'DRUM', 'VIOLIN', 'FLUTE', 'TRUMPET', 'SAXOPHONE']),
+    // Sports
+    sport: new Set(['FOOTBALL', 'BASKETBALL', 'TENNIS', 'GOLF', 'SWIMMING', 'RUNNING']),
+    // Colors
+    color: new Set(['RED', 'BLUE', 'GREEN', 'YELLOW', 'PURPLE', 'ORANGE', 'BLACK', 'WHITE']),
+    // Emotions
+    emotion: new Set(['HAPPY', 'SAD', 'ANGRY', 'SCARED', 'EXCITED', 'WORRIED', 'CALM']),
+    // Professions
+    profession: new Set(['DOCTOR', 'TEACHER', 'LAWYER', 'ENGINEER', 'ARTIST', 'MUSICIAN']),
+    // Places
+    place: new Set(['CITY', 'TOWN', 'VILLAGE', 'COUNTRY', 'STATE', 'PROVINCE', 'REGION'])
+};
+
+// Function to get word category
+function getWordCategory(word) {
+    const upperWord = word.toUpperCase();
     
-    // If the length difference is too large, they're probably not in the same family
-    if (Math.abs(word1.length - word2.length) > 4) {
-        return false;
-    }
-    
-    // Check if the shorter word is a complete prefix of the longer word
-    const shorterWord = word1.length <= word2.length ? word1 : word2;
-    const longerWord = word1.length > word2.length ? word1 : word2;
-    
-    // If the shorter word is a complete prefix, they're in the same family
-    if (longerWord.startsWith(shorterWord)) {
-        return true;
-    }
-    
-    // Check first 8 characters for similarity
-    const prefix1 = word1.slice(0, 8).toLowerCase();
-    const prefix2 = word2.slice(0, 8).toLowerCase();
-    
-    // If prefixes match exactly, they're likely in the same family
-    if (prefix1 === prefix2) {
-        return true;
-    }
-    
-    // Calculate similarity score for the first 8 characters
-    let matchingChars = 0;
-    for (let i = 0; i < 8; i++) {
-        if (prefix1[i] === prefix2[i]) {
-            matchingChars++;
+    // Check each category
+    for (const [category, words] of Object.entries(wordCategories)) {
+        // Check if the word starts with any of the category words
+        for (const categoryWord of words) {
+            if (upperWord.startsWith(categoryWord)) {
+                return category;
+            }
         }
     }
     
-    // If more than 6 characters match in the first 8, they're likely in the same family
-    return matchingChars >= 6;
+    return null; // No category found
+}
+
+// Function to check if words are in the same family
+function areWordsInSameFamily(word1, word2) {
+    // Get the first 8 characters of each word
+    const prefix1 = word1.slice(0, 8).toLowerCase();
+    const prefix2 = word2.slice(0, 8).toLowerCase();
+    
+    // Words must share the first 8 characters exactly
+    if (prefix1 !== prefix2) {
+        return false;
+    }
+    
+    // Get categories for both words
+    const category1 = getWordCategory(word1);
+    const category2 = getWordCategory(word2);
+    
+    // Words must be in the same category
+    return category1 !== null && category1 === category2;
 }
 
 // Function to group similar words
