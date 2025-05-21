@@ -703,7 +703,13 @@ function displayResults(words) {
     // Group similar words
     const { representativeWords, displayWords } = groupSimilarWords(words);
     
-    // Display representative words
+    // Create a set of all words that are part of groups
+    const groupedWords = new Set();
+    representativeWords.forEach(group => {
+        group.forEach(word => groupedWords.add(word));
+    });
+    
+    // Display representative words (in red)
     displayWords.forEach(word => {
         const wordElement = document.createElement('div');
         wordElement.className = 'word-item representative-word';
@@ -718,9 +724,9 @@ function displayResults(words) {
         resultsContainer.appendChild(wordElement);
     });
     
-    // Add non-representative words
+    // Add only words that are not part of any group
     words.forEach(word => {
-        if (!displayWords.includes(word)) {
+        if (!groupedWords.has(word)) {
             const wordElement = document.createElement('div');
             wordElement.className = 'word-item';
             wordElement.textContent = word.toUpperCase();
