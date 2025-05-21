@@ -993,7 +993,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ORIGINAL LEX feature
-    document.getElementById('originalLexButton').addEventListener('click', () => {
+    document.getElementById('originalLexButton').addEventListener('click', function() {
         const input = document.getElementById('originalLexInput').value.trim();
         if (input) {
             console.log('ORIGINAL LEX input:', input);
@@ -1007,7 +1007,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Hide ORIGINAL LEX and show EEE?
             document.getElementById('originalLexFeature').style.display = 'none';
             document.getElementById('eeeFeature').style.display = 'block';
-        });
+        }
     });
     
     document.getElementById('originalLexSkipButton').addEventListener('click', () => {
@@ -1328,7 +1328,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // O? feature buttons
     document.getElementById('oYesBtn').addEventListener('click', () => {
-        console.log('O? YES button clicked');
+        console.log('O? YES selected');
         const filteredWords = filterWordsByO(currentFilteredWords, true);
         document.getElementById('oFeature').classList.add('completed');
         displayResults(filteredWords);
@@ -1338,7 +1338,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     
     document.getElementById('oNoBtn').addEventListener('click', () => {
-        console.log('O? NO button clicked');
+        console.log('O? NO selected');
         const filteredWords = filterWordsByO(currentFilteredWords, false);
         document.getElementById('oFeature').classList.add('completed');
         displayResults(filteredWords);
