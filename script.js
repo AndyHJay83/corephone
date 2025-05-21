@@ -700,11 +700,32 @@ function displayResults(words) {
     const resultsContainer = document.getElementById('resultsContainer');
     resultsContainer.innerHTML = '';
     
-    words.forEach(word => {
+    // Group similar words
+    const { representativeWords, displayWords } = groupSimilarWords(words);
+    
+    // Display representative words
+    displayWords.forEach(word => {
         const wordElement = document.createElement('div');
-        wordElement.className = 'word-item';
+        wordElement.className = 'word-item representative-word';
         wordElement.textContent = word.toUpperCase();
+        
+        // Add click handler to show group
+        wordElement.onclick = () => {
+            const groupWords = representativeWords.get(word);
+            showWordGroupOverlay(groupWords);
+        };
+        
         resultsContainer.appendChild(wordElement);
+    });
+    
+    // Add non-representative words
+    words.forEach(word => {
+        if (!displayWords.includes(word)) {
+            const wordElement = document.createElement('div');
+            wordElement.className = 'word-item';
+            wordElement.textContent = word.toUpperCase();
+            resultsContainer.appendChild(wordElement);
+        }
     });
     
     updateWordCount(words.length);
@@ -1399,4 +1420,81 @@ function filterWordsByCurvedPositions(words, positions) {
         
         return true;
     });
+}
+
+// Function to group similar words
+function groupSimilarWords(words) {
+    const groups = {};
+    const representativeWords = new Map(); // Maps representative word to its group
+    
+    // Group words by first 6 letters
+    words.forEach(word => {
+        const prefix = word.slice(0, 6).toLowerCase();
+        if (!groups[prefix]) {
+            groups[prefix] = [];
+        }
+        groups[prefix].push(word);
+    });
+    
+    // Find representative words and create the mapping
+    Object.entries(groups).forEach(([prefix, wordGroup]) => {
+        if (wordGroup.length > 1) {
+            // Sort by length (shorter first) and then alphabetically
+            wordGroup.sort((a, b) => {
+                if (a.length === b.length) {
+                    return a.localeCompare(b);
+                }
+                return a.length - b.length;
+            });
+            
+            const representative = wordGroup[0];
+            representativeWords.set(representative, wordGroup);
+        }
+    });
+    
+    return {
+        representativeWords,
+        displayWords: Array.from(representativeWords.keys())
+    };
+}
+
+// Function to create and show overlay
+function showWordGroupOverlay(words) {
+    // Create overlay container
+    const overlay = document.createElement('div');
+    overlay.className = 'word-group-overlay';
+    
+    // Create content container
+    const content = document.createElement('div');
+    content.className = 'word-group-content';
+    
+    // Add words to content
+    words.forEach(word => {
+        const wordElement = document.createElement('div');
+        wordElement.className = 'word-group-item';
+        wordElement.textContent = word;
+        content.appendChild(wordElement);
+    });
+    
+    // Add close button
+    const closeButton = document.createElement('button');
+    closeButton.className = 'word-group-close';
+    closeButton.textContent = '×';
+    closeButton.onclick = () => {
+        document.body.removeChild(overlay);
+    };
+    
+    // Assemble overlay
+    content.appendChild(closeButton);
+    overlay.appendChild(content);
+    
+    // Add click handler to close when clicking outside content
+    overlay.onclick = (e) => {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    };
+    
+    // Add to document
+    document.body.appendChild(overlay);
 }
